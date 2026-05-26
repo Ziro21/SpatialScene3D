@@ -1,0 +1,47 @@
+# ============================================================
+# .gitignore — scene3d
+# ============================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# --- Virtual Environment ---
+venv/
+.venv/
+env/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# --- Data (too large for Git) ---
+data/*/frames/
+data/*/colmap/
+data/*/masks/
+data/*/semantics/
+outputs/
+
+# --- Model Weights (downloaded separately) ---
+checkpoints/
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# --- Temporary ---
+*.log
+.mypy_cache/
+.pytest_cache/
+
+# --- Keep these tracked ---
+!assets/videos/*.mp4
+!eval/results.json

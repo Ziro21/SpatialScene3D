@@ -1,0 +1,39 @@
+# ============================================================
+# scene3d — Local Mac Dependencies (M1 8GB)
+# ============================================================
+# These are the packages you install on your Mac.
+# Colab has its own installs inside the notebook.
+# ============================================================
+
+# --- Core ---
+numpy==1.26.4
+scipy==1.13.1
+Pillow==10.4.0
+scikit-image==0.24.0
+opencv-python-headless==4.10.0.84
+tqdm==4.66.4
+
+# --- PyTorch (MPS-enabled, Apple Silicon) ---
+torch==2.4.1
+torchvision==0.19.1
+
+# --- 3D Viewer ---
+viser==0.2.3
+open3d==0.18.0
+
+# --- CLIP (for text embeddings, runs on CPU) ---
+open-clip-torch==2.26.1
+
+# --- Grounded-SAM-2 deps (used on Colab, but needed for import) ---
+supervision==0.22.0
+transformers==4.44.2
+
+# --- Dev Quality ---
+pytest==8.3.2
+mypy==1.11.1
+black==24.8.0
+isort==5.13.2
+
+# --- Utilities ---
+matplotlib==3.9.2
+plyfile==1.0.3
