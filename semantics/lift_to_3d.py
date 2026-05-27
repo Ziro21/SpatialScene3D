@@ -53,12 +53,11 @@ def load_splat_ply(ply_path: str) -> Tuple[np.ndarray, Dict[str, np.ndarray]]:
     """
     try:
         from plyfile import PlyData
+
         ply = PlyData.read(ply_path)
         vertices = ply["vertex"]
 
-        xyz = np.column_stack([
-            vertices["x"], vertices["y"], vertices["z"]
-        ]).astype(np.float64)
+        xyz = np.column_stack([vertices["x"], vertices["y"], vertices["z"]]).astype(np.float64)
 
         # Store all other properties for round-tripping
         properties = {}
@@ -115,12 +114,14 @@ def save_semantic_ply(
             dtypes.append((name, "f4"))
 
     # Add semantic properties
-    dtypes.extend([
-        ("semantic_label", "u2"),
-        ("semantic_r", "u1"),
-        ("semantic_g", "u1"),
-        ("semantic_b", "u1"),
-    ])
+    dtypes.extend(
+        [
+            ("semantic_label", "u2"),
+            ("semantic_r", "u1"),
+            ("semantic_g", "u1"),
+            ("semantic_b", "u1"),
+        ]
+    )
 
     vertex_data = np.empty(n, dtype=dtypes)
     vertex_data["x"] = xyz[:, 0].astype(np.float32)
@@ -212,11 +213,14 @@ def load_colmap_cameras(colmap_dir: str) -> Tuple[np.ndarray, List[Dict]]:
         else:
             raise ValueError(f"Unsupported camera model: {model_id}")
 
-    K = np.array([
-        [fx, 0, cx],
-        [0, fy, cy],
-        [0, 0, 1],
-    ], dtype=np.float64)
+    K = np.array(
+        [
+            [fx, 0, cx],
+            [0, fy, cy],
+            [0, 0, 1],
+        ],
+        dtype=np.float64,
+    )
 
     # --- Read images.bin ---
     images_path = os.path.join(sparse_dir, "images.bin")
@@ -254,12 +258,14 @@ def load_colmap_cameras(colmap_dir: str) -> Tuple[np.ndarray, List[Dict]]:
             R = _quat_to_rot(qw, qx, qy, qz)
             t = np.array([tx, ty, tz])
 
-            images.append({
-                "image_id": image_id,
-                "name": name,
-                "R": R,  # world-to-camera rotation
-                "t": t,  # world-to-camera translation
-            })
+            images.append(
+                {
+                    "image_id": image_id,
+                    "name": name,
+                    "R": R,  # world-to-camera rotation
+                    "t": t,  # world-to-camera translation
+                }
+            )
 
     # Sort by name for consistent ordering
     images.sort(key=lambda x: x["name"])
@@ -269,11 +275,13 @@ def load_colmap_cameras(colmap_dir: str) -> Tuple[np.ndarray, List[Dict]]:
 
 def _quat_to_rot(qw: float, qx: float, qy: float, qz: float) -> np.ndarray:
     """Quaternion (w,x,y,z) → 3×3 rotation matrix."""
-    return np.array([
-        [1 - 2*(qy**2 + qz**2), 2*(qx*qy - qz*qw), 2*(qx*qz + qy*qw)],
-        [2*(qx*qy + qz*qw), 1 - 2*(qx**2 + qz**2), 2*(qy*qz - qx*qw)],
-        [2*(qx*qz - qy*qw), 2*(qy*qz + qx*qw), 1 - 2*(qx**2 + qy**2)],
-    ])
+    return np.array(
+        [
+            [1 - 2 * (qy**2 + qz**2), 2 * (qx * qy - qz * qw), 2 * (qx * qz + qy * qw)],
+            [2 * (qx * qy + qz * qw), 1 - 2 * (qx**2 + qz**2), 2 * (qy * qz - qx * qw)],
+            [2 * (qx * qz - qy * qw), 2 * (qy * qz + qx * qw), 1 - 2 * (qx**2 + qy**2)],
+        ]
+    )
 
 
 # ============================================================
@@ -489,9 +497,7 @@ def lift_semantics_to_3d(
         )
 
         # Look up labels
-        frame_labels = assign_labels_for_frame(
-            pixels, valid, masks_info, masks_dir
-        )
+        frame_labels = assign_labels_for_frame(pixels, valid, masks_info, masks_dir)
 
         # Accumulate votes (only for non-zero labels)
         labelled = frame_labels > 0
@@ -502,8 +508,10 @@ def lift_semantics_to_3d(
         frames_processed += 1
 
         if frames_processed % 10 == 0 or frames_processed == 1:
-            print(f"    Frame {frames_processed}/{len(images)}: "
-                  f"{frame_name}, {n_labelled} Gaussians labelled")
+            print(
+                f"    Frame {frames_processed}/{len(images)}: "
+                f"{frame_name}, {n_labelled} Gaussians labelled"
+            )
 
     # 5. Majority vote
     print(f"\n  Running majority vote across {frames_processed} frames...")
@@ -541,19 +549,27 @@ def main() -> None:
         description="Project 2D semantic masks onto 3D Gaussians via majority voting"
     )
     parser.add_argument(
-        "--splat", type=str, required=True,
+        "--splat",
+        type=str,
+        required=True,
         help="Path to input Gaussian splat .ply file",
     )
     parser.add_argument(
-        "--masks", type=str, required=True,
+        "--masks",
+        type=str,
+        required=True,
         help="Path to masks/ directory (must contain masks.json)",
     )
     parser.add_argument(
-        "--colmap", type=str, required=True,
+        "--colmap",
+        type=str,
+        required=True,
         help="Path to COLMAP workspace (containing sparse/0/)",
     )
     parser.add_argument(
-        "--output", type=str, required=True,
+        "--output",
+        type=str,
+        required=True,
         help="Path for output semantic .ply file",
     )
 

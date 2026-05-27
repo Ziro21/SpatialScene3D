@@ -66,9 +66,12 @@ def extract_frames_ffmpeg(
     # %06d.jpg            → output filenames: 000001.jpg, 000002.jpg, ...
     cmd = [
         "ffmpeg",
-        "-i", video_path,
-        "-vf", f"fps={fps},scale=-1:{height}",
-        "-q:v", "2",
+        "-i",
+        video_path,
+        "-vf",
+        f"fps={fps},scale=-1:{height}",
+        "-q:v",
+        "2",
         "-y",  # overwrite existing files without asking
         os.path.join(output_dir, "%06d.jpg"),
     ]
@@ -368,9 +371,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Extract and filter frames from a video for 3D reconstruction"
     )
-    parser.add_argument(
-        "--video", type=str, required=True, help="Path to input video (.mp4)"
-    )
+    parser.add_argument("--video", type=str, required=True, help="Path to input video (.mp4)")
     parser.add_argument(
         "--output_dir",
         type=str,

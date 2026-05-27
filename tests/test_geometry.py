@@ -73,7 +73,9 @@ class TestCOLMAPWriters:
     def test_write_cameras_binary(self, tmp_path) -> None:
         """cameras.bin should be readable and have correct header."""
         cameras = {
-            1: Camera(camera_id=1, model_id=1, width=640, height=480, params=[500.0, 500.0, 320.0, 240.0]),
+            1: Camera(
+                camera_id=1, model_id=1, width=640, height=480, params=[500.0, 500.0, 320.0, 240.0]
+            ),
         }
 
         path = str(tmp_path / "cameras.bin")
@@ -99,12 +101,28 @@ class TestCOLMAPWriters:
         """images.bin should have correct number of entries."""
         images = {
             1: Image(
-                image_id=1, qw=1.0, qx=0.0, qy=0.0, qz=0.0,
-                tx=0.0, ty=0.0, tz=0.0, camera_id=1, name="000001.jpg",
+                image_id=1,
+                qw=1.0,
+                qx=0.0,
+                qy=0.0,
+                qz=0.0,
+                tx=0.0,
+                ty=0.0,
+                tz=0.0,
+                camera_id=1,
+                name="000001.jpg",
             ),
             2: Image(
-                image_id=2, qw=0.707, qx=0.0, qy=0.0, qz=0.707,
-                tx=1.0, ty=0.0, tz=0.0, camera_id=1, name="000002.jpg",
+                image_id=2,
+                qw=0.707,
+                qx=0.0,
+                qy=0.0,
+                qz=0.707,
+                tx=1.0,
+                ty=0.0,
+                tz=0.0,
+                camera_id=1,
+                name="000002.jpg",
             ),
         }
 
@@ -161,9 +179,11 @@ class TestCOLMAPWriters:
 # ============================================================
 def quaternion_to_rotation_matrix(qw, qx, qy, qz):
     """Convert quaternion to rotation matrix (for test verification only)."""
-    R = np.array([
-        [1 - 2*(qy**2 + qz**2), 2*(qx*qy - qz*qw), 2*(qx*qz + qy*qw)],
-        [2*(qx*qy + qz*qw), 1 - 2*(qx**2 + qz**2), 2*(qy*qz - qx*qw)],
-        [2*(qx*qz - qy*qw), 2*(qy*qz + qx*qw), 1 - 2*(qx**2 + qy**2)],
-    ])
+    R = np.array(
+        [
+            [1 - 2 * (qy**2 + qz**2), 2 * (qx * qy - qz * qw), 2 * (qx * qz + qy * qw)],
+            [2 * (qx * qy + qz * qw), 1 - 2 * (qx**2 + qz**2), 2 * (qy * qz - qx * qw)],
+            [2 * (qx * qz - qy * qw), 2 * (qy * qz + qx * qw), 1 - 2 * (qx**2 + qy**2)],
+        ]
+    )
     return R

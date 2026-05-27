@@ -65,8 +65,8 @@ class TestViridisColormap:
         colours = _viridis_colormap(np.array([0.0]))
         # Should be approximately (68, 1, 84) — dark purple
         assert colours[0, 0] < 100  # R
-        assert colours[0, 1] < 50   # G low
-        assert colours[0, 2] > 50   # B high-ish
+        assert colours[0, 1] < 50  # G low
+        assert colours[0, 2] > 50  # B high-ish
 
     def test_one_is_yellow(self):
         """Value 1 should produce yellow (viridis end)."""
@@ -119,15 +119,23 @@ class TestLoadSemanticPly:
 
     def test_loads_basic_ply(self):
         """Should load a minimal PLY with xyz + rgb."""
-        from viewer.app import load_semantic_ply
         from plyfile import PlyData, PlyElement
+
+        from viewer.app import load_semantic_ply
 
         with tempfile.TemporaryDirectory() as tmp:
             n = 20
-            data = np.empty(n, dtype=[
-                ("x", "f4"), ("y", "f4"), ("z", "f4"),
-                ("red", "u1"), ("green", "u1"), ("blue", "u1"),
-            ])
+            data = np.empty(
+                n,
+                dtype=[
+                    ("x", "f4"),
+                    ("y", "f4"),
+                    ("z", "f4"),
+                    ("red", "u1"),
+                    ("green", "u1"),
+                    ("blue", "u1"),
+                ],
+            )
             data["x"] = np.random.uniform(-1, 1, n)
             data["y"] = np.random.uniform(-1, 1, n)
             data["z"] = np.random.uniform(-1, 1, n)
@@ -147,17 +155,27 @@ class TestLoadSemanticPly:
 
     def test_loads_semantic_properties(self):
         """Should detect semantic_label and semantic_rgb properties."""
-        from viewer.app import load_semantic_ply
         from plyfile import PlyData, PlyElement
+
+        from viewer.app import load_semantic_ply
 
         with tempfile.TemporaryDirectory() as tmp:
             n = 10
-            data = np.empty(n, dtype=[
-                ("x", "f4"), ("y", "f4"), ("z", "f4"),
-                ("red", "u1"), ("green", "u1"), ("blue", "u1"),
-                ("semantic_label", "u2"),
-                ("semantic_r", "u1"), ("semantic_g", "u1"), ("semantic_b", "u1"),
-            ])
+            data = np.empty(
+                n,
+                dtype=[
+                    ("x", "f4"),
+                    ("y", "f4"),
+                    ("z", "f4"),
+                    ("red", "u1"),
+                    ("green", "u1"),
+                    ("blue", "u1"),
+                    ("semantic_label", "u2"),
+                    ("semantic_r", "u1"),
+                    ("semantic_g", "u1"),
+                    ("semantic_b", "u1"),
+                ],
+            )
             data["x"] = np.random.uniform(-1, 1, n)
             data["y"] = np.random.uniform(-1, 1, n)
             data["z"] = np.random.uniform(-1, 1, n)
@@ -239,8 +257,7 @@ class TestOccupancyMap:
             label_names = {0: "unlabelled", 1: "chair"}
             output = os.path.join(tmp, "occ.png")
 
-            generate_occupancy_map(xyz, labels, label_names,
-                                   resolution=0.1, output_path=output)
+            generate_occupancy_map(xyz, labels, label_names, resolution=0.1, output_path=output)
 
             assert os.path.exists(output)
             img = cv2.imread(output)

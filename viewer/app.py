@@ -66,9 +66,7 @@ def load_semantic_ply(ply_path: str) -> dict:
 
     # Colours
     if "red" in names:
-        data["rgb"] = np.column_stack(
-            [v["red"], v["green"], v["blue"]]
-        ).astype(np.uint8)
+        data["rgb"] = np.column_stack([v["red"], v["green"], v["blue"]]).astype(np.uint8)
     else:
         data["rgb"] = np.full((n, 3), 180, dtype=np.uint8)
 
@@ -80,25 +78,25 @@ def load_semantic_ply(ply_path: str) -> dict:
 
     # Gaussian scales and rotations (from gsplat output)
     if "scale_0" in names:
-        data["scales"] = np.column_stack([
-            v["scale_0"], v["scale_1"], v["scale_2"]
-        ]).astype(np.float32)
+        data["scales"] = np.column_stack([v["scale_0"], v["scale_1"], v["scale_2"]]).astype(
+            np.float32
+        )
     else:
         data["scales"] = None
 
     if "rot_0" in names:
-        data["rotations"] = np.column_stack([
-            v["rot_0"], v["rot_1"], v["rot_2"], v["rot_3"]
-        ]).astype(np.float32)
+        data["rotations"] = np.column_stack(
+            [v["rot_0"], v["rot_1"], v["rot_2"], v["rot_3"]]
+        ).astype(np.float32)
     else:
         data["rotations"] = None
 
     # Semantic properties (added by lift_to_3d.py)
     if "semantic_label" in names:
         data["semantic_label"] = np.array(v["semantic_label"], dtype=np.uint16)
-        data["semantic_rgb"] = np.column_stack([
-            v["semantic_r"], v["semantic_g"], v["semantic_b"]
-        ]).astype(np.uint8)
+        data["semantic_rgb"] = np.column_stack(
+            [v["semantic_r"], v["semantic_g"], v["semantic_b"]]
+        ).astype(np.uint8)
     else:
         data["semantic_label"] = None
         data["semantic_rgb"] = None
@@ -137,11 +135,14 @@ def _compute_covariances(
             # Rotation matrix from quaternion (w, x, y, z)
             q = rotations[i]
             qw, qx, qy, qz = q[0], q[1], q[2], q[3]
-            R = np.array([
-                [1 - 2*(qy**2 + qz**2), 2*(qx*qy - qz*qw), 2*(qx*qz + qy*qw)],
-                [2*(qx*qy + qz*qw), 1 - 2*(qx**2 + qz**2), 2*(qy*qz - qx*qw)],
-                [2*(qx*qz - qy*qw), 2*(qy*qz + qx*qw), 1 - 2*(qx**2 + qy**2)],
-            ], dtype=np.float32)
+            R = np.array(
+                [
+                    [1 - 2 * (qy**2 + qz**2), 2 * (qx * qy - qz * qw), 2 * (qx * qz + qy * qw)],
+                    [2 * (qx * qy + qz * qw), 1 - 2 * (qx**2 + qz**2), 2 * (qy * qz - qx * qw)],
+                    [2 * (qx * qz - qy * qw), 2 * (qy * qz + qx * qw), 1 - 2 * (qx**2 + qy**2)],
+                ],
+                dtype=np.float32,
+            )
 
             RS = R @ S
             covariances[i] = RS @ RS.T
@@ -149,7 +150,7 @@ def _compute_covariances(
     else:
         # Default: small isotropic Gaussians
         default_scale = 0.005
-        cov = np.eye(3, dtype=np.float32) * (default_scale ** 2)
+        cov = np.eye(3, dtype=np.float32) * (default_scale**2)
         return np.tile(cov, (n, 1, 1))
 
 
@@ -219,13 +220,16 @@ def compute_depth_colours(xyz: np.ndarray, camera_pos: np.ndarray = None) -> np.
 def _viridis_colormap(values: np.ndarray) -> np.ndarray:
     """Apply viridis colourmap to normalised [0, 1] values → (N, 3) uint8."""
     # Simplified viridis: 5 anchor points
-    anchors = np.array([
-        [68, 1, 84],      # 0.0 — dark purple
-        [59, 82, 139],    # 0.25 — blue
-        [33, 145, 140],   # 0.5 — teal
-        [94, 201, 98],    # 0.75 — green
-        [253, 231, 37],   # 1.0 — yellow
-    ], dtype=np.float32)
+    anchors = np.array(
+        [
+            [68, 1, 84],  # 0.0 — dark purple
+            [59, 82, 139],  # 0.25 — blue
+            [33, 145, 140],  # 0.5 — teal
+            [94, 201, 98],  # 0.75 — green
+            [253, 231, 37],  # 1.0 — yellow
+        ],
+        dtype=np.float32,
+    )
 
     idx = values * (len(anchors) - 1)
     idx_floor = np.clip(np.floor(idx).astype(int), 0, len(anchors) - 2)
@@ -307,8 +311,8 @@ def compute_query_colours(
         return colours, []
 
     try:
-        import torch
         import clip as clip_module
+        import torch
 
         # Load CLIP and encode the query text
         try:
@@ -529,7 +533,7 @@ class SceneViewer:
                 )
                 # Update results display
                 if results:
-                    lines = [f"**Query: \"{query_text}\"**\n"]
+                    lines = [f'**Query: "{query_text}"**\n']
                     for label, score in results[:5]:
                         bar = "🟥" if score > 0.25 else "🟧" if score > 0.2 else "🟦"
                         lines.append(f"{bar} {label}: {score:.3f}")
@@ -568,6 +572,7 @@ def _has_mps() -> bool:
     """Check if MPS (Apple Silicon GPU) is available."""
     try:
         import torch
+
         return torch.backends.mps.is_available()
     except (ImportError, AttributeError):
         return False
@@ -617,6 +622,7 @@ def generate_occupancy_map(
 
     # Generate colours per label
     from semantics.lift_to_3d import _generate_label_colours
+
     label_colours = _generate_label_colours(label_names)
 
     # Rasterise Gaussians into grid cells
@@ -631,6 +637,7 @@ def generate_occupancy_map(
 
     # Assign colour by majority label in each cell
     from collections import Counter
+
     for (cy, cx), votes in cell_votes.items():
         if votes:
             label = Counter(votes).most_common(1)[0][0]
@@ -641,8 +648,7 @@ def generate_occupancy_map(
     scale = max(1, 800 // max(grid_w, grid_h))
     if scale > 1:
         occupancy = cv2.resize(
-            occupancy, (grid_w * scale, grid_h * scale),
-            interpolation=cv2.INTER_NEAREST
+            occupancy, (grid_w * scale, grid_h * scale), interpolation=cv2.INTER_NEAREST
         )
 
     if output_path:
@@ -660,27 +666,38 @@ def main() -> None:
         description="Interactive 3D semantic viewer for Gaussian splats"
     )
     parser.add_argument(
-        "--scene", type=str, default="scene1",
+        "--scene",
+        type=str,
+        default="scene1",
         help="Scene name (looks for data/{scene}/ and outputs/{scene}/)",
     )
     parser.add_argument(
-        "--data_dir", type=str, default="data",
+        "--data_dir",
+        type=str,
+        default="data",
         help="Base data directory",
     )
     parser.add_argument(
-        "--output_dir", type=str, default="outputs",
+        "--output_dir",
+        type=str,
+        default="outputs",
         help="Base outputs directory",
     )
     parser.add_argument(
-        "--splat", type=str, default=None,
+        "--splat",
+        type=str,
+        default=None,
         help="Direct path to .ply file (overrides --scene)",
     )
     parser.add_argument(
-        "--port", type=int, default=8080,
+        "--port",
+        type=int,
+        default=8080,
         help="Port for the viewer server",
     )
     parser.add_argument(
-        "--occupancy", action="store_true",
+        "--occupancy",
+        action="store_true",
         help="Generate top-down occupancy map",
     )
 
@@ -708,7 +725,9 @@ def main() -> None:
     if not os.path.exists(ply_path):
         print(f"\n  ⚠ PLY file not found: {ply_path}")
         print(f"  Run the Colab pipeline first, then:")
-        print(f"    python -m semantics.lift_to_3d --splat ... --masks ... --colmap ... --output ...")
+        print(
+            f"    python -m semantics.lift_to_3d --splat ... --masks ... --colmap ... --output ..."
+        )
         return
 
     splat_data = load_semantic_ply(ply_path)

@@ -34,6 +34,7 @@ def get_device() -> str:
     """Select best available device: MPS (Mac), CUDA, or CPU."""
     try:
         import torch
+
         if torch.backends.mps.is_available():
             return "mps"
         elif torch.cuda.is_available():
@@ -215,8 +216,7 @@ def compute_instance_embeddings(
 
         # Subsample if too many crops
         if len(crop_pairs) > max_crops_per_instance:
-            indices = np.linspace(0, len(crop_pairs) - 1,
-                                  max_crops_per_instance, dtype=int)
+            indices = np.linspace(0, len(crop_pairs) - 1, max_crops_per_instance, dtype=int)
             crop_pairs = [crop_pairs[i] for i in indices]
 
         all_features = []
@@ -252,8 +252,7 @@ def compute_instance_embeddings(
             # Re-normalise to unit length
             avg_embedding = avg_embedding / np.linalg.norm(avg_embedding)
             embeddings[label] = avg_embedding
-            print(f"    {label}: averaged {len(all_features)} crops → "
-                  f"dim={len(avg_embedding)}")
+            print(f"    {label}: averaged {len(all_features)} crops → " f"dim={len(avg_embedding)}")
         else:
             print(f"    {label}: no valid crops found ⚠")
 
@@ -364,19 +363,27 @@ def main() -> None:
         description="Compute CLIP ViT-L/14 embeddings per semantic instance"
     )
     parser.add_argument(
-        "--masks", type=str, required=True,
+        "--masks",
+        type=str,
+        required=True,
         help="Path to masks/ directory (must contain masks.json)",
     )
     parser.add_argument(
-        "--frames", type=str, required=True,
+        "--frames",
+        type=str,
+        required=True,
         help="Path to frame images directory",
     )
     parser.add_argument(
-        "--output", type=str, required=True,
+        "--output",
+        type=str,
+        required=True,
         help="Path for output embeddings .npz file",
     )
     parser.add_argument(
-        "--device", type=str, default=None,
+        "--device",
+        type=str,
+        default=None,
         help="Device: 'mps', 'cuda', or 'cpu' (auto-detected if omitted)",
     )
 

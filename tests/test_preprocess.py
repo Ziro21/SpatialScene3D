@@ -63,10 +63,14 @@ def test_video(tmp_path: Path) -> str:
         [
             "ffmpeg",
             "-y",
-            "-framerate", "30",
-            "-i", str(frame_dir / "%06d.jpg"),
-            "-c:v", "libx264",
-            "-pix_fmt", "yuv420p",
+            "-framerate",
+            "30",
+            "-i",
+            str(frame_dir / "%06d.jpg"),
+            "-c:v",
+            "libx264",
+            "-pix_fmt",
+            "yuv420p",
             video_path,
         ],
         capture_output=True,
@@ -127,9 +131,9 @@ class TestBlurDetection:
         sharp_score = compute_blur_score(sharp_path)
         blurry_score = compute_blur_score(blurry_path)
 
-        assert sharp_score > blurry_score * 2, (
-            f"Sharp ({sharp_score:.1f}) should be much higher than blurry ({blurry_score:.1f})"
-        )
+        assert (
+            sharp_score > blurry_score * 2
+        ), f"Sharp ({sharp_score:.1f}) should be much higher than blurry ({blurry_score:.1f})"
 
 
 class TestFullPipeline:
@@ -180,6 +184,6 @@ class TestFullPipeline:
         for i, frame_path in enumerate(frames):
             expected_name = f"{i + 1:06d}.jpg"
             actual_name = os.path.basename(frame_path)
-            assert actual_name == expected_name, (
-                f"Frame {i}: expected {expected_name}, got {actual_name}"
-            )
+            assert (
+                actual_name == expected_name
+            ), f"Frame {i}: expected {expected_name}, got {actual_name}"

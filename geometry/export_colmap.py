@@ -75,9 +75,9 @@ def load_ply(ply_path: str) -> Tuple[np.ndarray, np.ndarray]:
 
         # Get colours if available
         if "red" in vertices.data.dtype.names:
-            rgb = np.column_stack(
-                [vertices["red"], vertices["green"], vertices["blue"]]
-            ).astype(np.uint8)
+            rgb = np.column_stack([vertices["red"], vertices["green"], vertices["blue"]]).astype(
+                np.uint8
+            )
         else:
             rgb = np.full((len(xyz), 3), 128, dtype=np.uint8)
 
@@ -232,11 +232,13 @@ def _parse_kitti_trajectory(lines: List[str]) -> np.ndarray:
 
 def _quat_to_rot(qw: float, qx: float, qy: float, qz: float) -> np.ndarray:
     """Quaternion (w, x, y, z) to 3x3 rotation matrix."""
-    return np.array([
-        [1 - 2 * (qy**2 + qz**2), 2 * (qx * qy - qz * qw), 2 * (qx * qz + qy * qw)],
-        [2 * (qx * qy + qz * qw), 1 - 2 * (qx**2 + qz**2), 2 * (qy * qz - qx * qw)],
-        [2 * (qx * qz - qy * qw), 2 * (qy * qz + qx * qw), 1 - 2 * (qx**2 + qy**2)],
-    ])
+    return np.array(
+        [
+            [1 - 2 * (qy**2 + qz**2), 2 * (qx * qy - qz * qw), 2 * (qx * qz + qy * qw)],
+            [2 * (qx * qy + qz * qw), 1 - 2 * (qx**2 + qz**2), 2 * (qy * qz - qx * qw)],
+            [2 * (qx * qz - qy * qw), 2 * (qy * qz + qx * qw), 1 - 2 * (qx**2 + qy**2)],
+        ]
+    )
 
 
 # ============================================================
@@ -336,8 +338,13 @@ def poses_to_colmap_images(
         image_id = i + 1  # COLMAP IDs start from 1
         images[image_id] = Image(
             image_id=image_id,
-            qw=qw, qx=qx, qy=qy, qz=qz,
-            tx=float(t[0]), ty=float(t[1]), tz=float(t[2]),
+            qw=qw,
+            qx=qx,
+            qy=qy,
+            qz=qz,
+            tx=float(t[0]),
+            ty=float(t[1]),
+            tz=float(t[2]),
             camera_id=camera_id,
             name=frame_names[i],
         )
@@ -368,8 +375,13 @@ def make_identity_images(
         image_id = i + 1
         images[image_id] = Image(
             image_id=image_id,
-            qw=1.0, qx=0.0, qy=0.0, qz=0.0,
-            tx=i * 0.1, ty=0.0, tz=0.0,  # evenly spaced along X
+            qw=1.0,
+            qx=0.0,
+            qy=0.0,
+            qz=0.0,
+            tx=i * 0.1,
+            ty=0.0,
+            tz=0.0,  # evenly spaced along X
             camera_id=camera_id,
             name=name,
         )
@@ -416,9 +428,7 @@ def export_to_colmap(
     import cv2
 
     # Get frame filenames (sorted)
-    frame_names = sorted(
-        [f for f in os.listdir(frames_dir) if f.endswith((".jpg", ".png"))]
-    )
+    frame_names = sorted([f for f in os.listdir(frames_dir) if f.endswith((".jpg", ".png"))])
     num_frames = len(frame_names)
     print(f"\n  Found {num_frames} frames in {frames_dir}")
 

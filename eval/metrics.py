@@ -65,7 +65,7 @@ def compute_psnr(img1: np.ndarray, img2: np.ndarray) -> float:
         return float("inf")
 
     max_pixel = 255.0
-    return float(10.0 * np.log10(max_pixel ** 2 / mse))
+    return float(10.0 * np.log10(max_pixel**2 / mse))
 
 
 def compute_ssim(
@@ -99,9 +99,7 @@ def compute_ssim(
     # Compute per-channel and average
     ssim_channels = []
     for c in range(min(img1.shape[2], 3)):
-        ssim_c = _ssim_single_channel(
-            img1[:, :, c], img2[:, :, c], window_size, C1, C2
-        )
+        ssim_c = _ssim_single_channel(img1[:, :, c], img2[:, :, c], window_size, C1, C2)
         ssim_channels.append(ssim_c)
 
     return float(np.mean(ssim_channels))
@@ -123,12 +121,12 @@ def _ssim_single_channel(
     mu1 = cv2.filter2D(img1, -1, window)
     mu2 = cv2.filter2D(img2, -1, window)
 
-    mu1_sq = mu1 ** 2
-    mu2_sq = mu2 ** 2
+    mu1_sq = mu1**2
+    mu2_sq = mu2**2
     mu1_mu2 = mu1 * mu2
 
-    sigma1_sq = cv2.filter2D(img1 ** 2, -1, window) - mu1_sq
-    sigma2_sq = cv2.filter2D(img2 ** 2, -1, window) - mu2_sq
+    sigma1_sq = cv2.filter2D(img1**2, -1, window) - mu1_sq
+    sigma2_sq = cv2.filter2D(img2**2, -1, window) - mu2_sq
     sigma12 = cv2.filter2D(img1 * img2, -1, window) - mu1_mu2
 
     numerator = (2 * mu1_mu2 + C1) * (2 * sigma12 + C2)
@@ -159,10 +157,7 @@ def evaluate_rendering(
         'num_test_frames'
     """
     # Find matching frame pairs
-    gt_files = sorted([
-        f for f in os.listdir(gt_frames_dir)
-        if f.endswith((".png", ".jpg"))
-    ])
+    gt_files = sorted([f for f in os.listdir(gt_frames_dir) if f.endswith((".png", ".jpg"))])
     rendered_files = set(os.listdir(rendered_frames_dir))
 
     # Select test frames (evenly spaced)
@@ -196,9 +191,7 @@ def evaluate_rendering(
 
         # Resize rendered to match GT if needed
         if gt_img.shape[:2] != rendered_img.shape[:2]:
-            rendered_img = cv2.resize(
-                rendered_img, (gt_img.shape[1], gt_img.shape[0])
-            )
+            rendered_img = cv2.resize(rendered_img, (gt_img.shape[1], gt_img.shape[0]))
 
         psnr_scores.append(compute_psnr(gt_img, rendered_img))
         ssim_scores.append(compute_ssim(gt_img, rendered_img))
@@ -281,6 +274,7 @@ def load_point_cloud(path: str) -> np.ndarray:
         return np.load(path).astype(np.float64)
 
     from plyfile import PlyData
+
     ply = PlyData.read(path)
     v = ply["vertex"]
     return np.column_stack([v["x"], v["y"], v["z"]]).astype(np.float64)
@@ -349,24 +343,27 @@ def compute_precision_at_k(
 
             rank = top_labels.index(expected) + 1 if expected in top_labels else -1
 
-            details.append({
-                "query": query_str,
-                "expected": expected,
-                "correct": is_correct,
-                "rank": rank,
-                "top_results": [
-                    {"label": label, "score": round(score, 4)}
-                    for label, score in results
-                ],
-            })
+            details.append(
+                {
+                    "query": query_str,
+                    "expected": expected,
+                    "correct": is_correct,
+                    "rank": rank,
+                    "top_results": [
+                        {"label": label, "score": round(score, 4)} for label, score in results
+                    ],
+                }
+            )
         except Exception as e:
-            details.append({
-                "query": query_str,
-                "expected": expected,
-                "correct": False,
-                "rank": -1,
-                "error": str(e),
-            })
+            details.append(
+                {
+                    "query": query_str,
+                    "expected": expected,
+                    "correct": False,
+                    "rank": -1,
+                    "error": str(e),
+                }
+            )
 
     precision = correct / max(len(queries), 1)
 
@@ -411,7 +408,9 @@ def run_evaluation(
     scene_data = os.path.join(data_dir, scene_name)
     scene_output = os.path.join(output_dir, scene_name)
 
-    results = {
+    from typing import Any
+
+    results: Dict[str, Any] = {
         "scene": scene_name,
         "timestamp": datetime.now().isoformat(),
     }
@@ -453,9 +452,11 @@ def run_evaluation(
         print("\n  Computing semantic metrics (Precision@K)...")
         semantic = compute_precision_at_k(queries, embeddings_path)
         results["semantic"] = semantic
-        print(f"    Precision@{semantic.get('k', 10)}: "
-              f"{semantic['precision_at_k']:.2%} "
-              f"({semantic['num_correct']}/{semantic['num_queries']})")
+        print(
+            f"    Precision@{semantic.get('k', 10)}: "
+            f"{semantic['precision_at_k']:.2%} "
+            f"({semantic['num_correct']}/{semantic['num_queries']})"
+        )
     else:
         print("  ⏭ Semantic metrics skipped (no queries or embeddings)")
         results["semantic"] = None
@@ -499,12 +500,15 @@ def main() -> None:
     parser.add_argument("--scene", type=str, required=True, help="Scene name")
     parser.add_argument("--data_dir", type=str, default="data", help="Base data dir")
     parser.add_argument("--output_dir", type=str, default="outputs", help="Base output dir")
-    parser.add_argument("--save_results", type=str, default="eval/results.json",
-                        help="Path to save results JSON")
-    parser.add_argument("--reference_ply", type=str, default=None,
-                        help="Reference point cloud for Chamfer distance")
-    parser.add_argument("--queries_file", type=str, default=None,
-                        help="JSON file with text queries for Precision@K")
+    parser.add_argument(
+        "--save_results", type=str, default="eval/results.json", help="Path to save results JSON"
+    )
+    parser.add_argument(
+        "--reference_ply", type=str, default=None, help="Reference point cloud for Chamfer distance"
+    )
+    parser.add_argument(
+        "--queries_file", type=str, default=None, help="JSON file with text queries for Precision@K"
+    )
 
     args = parser.parse_args()
 

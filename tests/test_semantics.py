@@ -4,9 +4,9 @@ test_semantics.py — Tests for semantic lifting and CLIP embeddings
 
 import json
 import os
+import shutil
 import struct
 import tempfile
-import shutil
 
 import cv2
 import numpy as np
@@ -48,9 +48,9 @@ def create_mock_colmap_workspace(tmp_dir, num_frames=3, img_w=100, img_h=100):
             f.write(struct.pack("<d", 0.0))  # tx
             f.write(struct.pack("<d", 0.0))  # ty
             f.write(struct.pack("<d", -5.0 + i * 0.5))  # tz — step back
-            f.write(struct.pack("<i", 1))    # camera_id
+            f.write(struct.pack("<i", 1))  # camera_id
             f.write(fname.encode("utf-8") + b"\x00")
-            f.write(struct.pack("<Q", 0))    # 0 keypoints
+            f.write(struct.pack("<Q", 0))  # 0 keypoints
 
     # Create dummy frame images
     for fname in frame_names:
@@ -68,9 +68,13 @@ def create_mock_splat_ply(tmp_dir, num_gaussians=50):
     xyz = np.random.uniform(-1, 1, (num_gaussians, 3)).astype(np.float32)
 
     dtype = [
-        ("x", "f4"), ("y", "f4"), ("z", "f4"),
+        ("x", "f4"),
+        ("y", "f4"),
+        ("z", "f4"),
         ("opacity", "f4"),
-        ("red", "u1"), ("green", "u1"), ("blue", "u1"),
+        ("red", "u1"),
+        ("green", "u1"),
+        ("blue", "u1"),
     ]
     data = np.empty(num_gaussians, dtype=dtype)
     data["x"] = xyz[:, 0]
@@ -101,35 +105,41 @@ def create_mock_masks(tmp_dir, frame_names, img_w=100, img_h=100):
 
         # Mask 1: left half = 'chair'
         chair_mask = np.zeros((img_h, img_w), dtype=np.uint8)
-        chair_mask[:, :img_w // 2] = 255
+        chair_mask[:, : img_w // 2] = 255
         chair_file = f"{base}_mask_000.png"
         cv2.imwrite(os.path.join(masks_dir, chair_file), chair_mask)
-        masks_info.append({
-            "mask_file": chair_file,
-            "label": "chair",
-            "confidence": 0.9,
-            "instance_id": 0,
-            "_label_id": 1,
-        })
+        masks_info.append(
+            {
+                "mask_file": chair_file,
+                "label": "chair",
+                "confidence": 0.9,
+                "instance_id": 0,
+                "_label_id": 1,
+            }
+        )
 
         # Mask 2: right half = 'table'
         table_mask = np.zeros((img_h, img_w), dtype=np.uint8)
-        table_mask[:, img_w // 2:] = 255
+        table_mask[:, img_w // 2 :] = 255
         table_file = f"{base}_mask_001.png"
         cv2.imwrite(os.path.join(masks_dir, table_file), table_mask)
-        masks_info.append({
-            "mask_file": table_file,
-            "label": "table",
-            "confidence": 0.85,
-            "instance_id": 1,
-            "_label_id": 2,
-        })
+        masks_info.append(
+            {
+                "mask_file": table_file,
+                "label": "table",
+                "confidence": 0.85,
+                "instance_id": 1,
+                "_label_id": 2,
+            }
+        )
 
-        manifest.append({
-            "frame": fname,
-            "frame_index": i,
-            "masks": masks_info,
-        })
+        manifest.append(
+            {
+                "frame": fname,
+                "frame_index": i,
+                "masks": masks_info,
+            }
+        )
 
     with open(os.path.join(masks_dir, "masks.json"), "w") as f:
         json.dump(manifest, f, indent=2)
@@ -250,6 +260,7 @@ class TestSemanticPLY:
             assert os.path.exists(output_path)
 
             from plyfile import PlyData
+
             ply = PlyData.read(output_path)
             prop_names = ply["vertex"].data.dtype.names
 
