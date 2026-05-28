@@ -470,7 +470,7 @@ class SceneViewer:
             label="Query",
             initial_value="chair",
         )
-        self.query_button = gui.gui.add_button("Search", icon="IconSearch")
+        self.query_button = gui.gui.add_button("Search")
         self.query_results = gui.gui.add_markdown("*Enter a query and click Search*")
 
         @self.query_button.on_click
