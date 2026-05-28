@@ -598,7 +598,7 @@ try:
         results = gdino_processor.post_process_grounded_object_detection(
             outputs,
             inputs["input_ids"],
-            box_threshold=0.3,
+            threshold=0.3,
             text_threshold=0.25,
             target_sizes=[(h, w)],
         )
