@@ -101,26 +101,31 @@ else:
 # Install dependencies IN ORDER (order matters!)
 
 import os
+# Set environment for T4 GPU and force CUDA
 os.environ["TORCH_CUDA_ARCH_LIST"] = "7.5"
 os.environ["FORCE_CUDA"] = "1"
+os.environ["MAX_JOBS"] = "4"  # Prevent Colab RAM crash during compile
 
-# Step 0: Build curope manually first (the part that keeps failing)
+# Step 0: Fix Python 3.12 build tools (distutils removal)
+!pip install setuptools==69.5.1 wheel ninja
+
+# Step 1: Pre-install lietorch manually (otherwise fails on Python 3.12)
+!pip install --no-build-isolation git+https://github.com/princeton-vl/lietorch.git
+
+# Step 2: Build curope manually
 !cd {SLAM_DIR}/thirdparty/mast3r/dust3r/croco/models/curope && pip install .
 
-# Step 1: MASt3R (the 3D matching backbone)
+# Step 3: MASt3R (the 3D matching backbone)
 !pip install --no-build-isolation -e {SLAM_DIR}/thirdparty/mast3r
 
-# Step 2: in3d (internal 3D utilities)
+# Step 4: in3d (internal 3D utilities)
 !pip install --no-build-isolation -e {SLAM_DIR}/thirdparty/in3d
 
-# Step 3: MASt3R-SLAM itself (builds custom CUDA kernels)
+# Step 5: MASt3R-SLAM itself (builds custom CUDA kernels)
 !cd {SLAM_DIR} && pip install --no-build-isolation -e .
 
-# Step 4: plyfile (for reading MASt3R-SLAM's PLY output)
+# Step 6: extras
 !pip install plyfile natsort
-
-# Step 5: Optional faster video loading
-!pip install torchcodec==0.1 2>/dev/null || echo "torchcodec not available, using default loader"
 
 print("\n✓ MASt3R-SLAM installed")
 
