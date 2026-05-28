@@ -432,7 +432,7 @@ class SceneViewer:
 
         # Title
         gui.gui.add_markdown("## 🔬 scene3d Viewer")
-        gui.gui.add_divider()
+        gui.gui.add_markdown("---")
 
         # Render mode dropdown
         self.mode_dropdown = gui.gui.add_dropdown(
@@ -447,7 +447,7 @@ class SceneViewer:
             self.current_mode = mode
             self._update_scene()
 
-        gui.gui.add_divider()
+        gui.gui.add_markdown("---")
 
         # Point size control
         self.point_size = gui.gui.add_slider(
@@ -462,7 +462,7 @@ class SceneViewer:
         def _on_size_change(event: viser.GuiEvent) -> None:
             self._update_scene()
 
-        gui.gui.add_divider()
+        gui.gui.add_markdown("---")
 
         # Text query input (for CLIP mode)
         gui.gui.add_markdown("### 🔍 Text Query")
@@ -481,7 +481,7 @@ class SceneViewer:
                 self.mode_dropdown.value = "Text Query"
                 self._update_scene(query_text=query)
 
-        gui.gui.add_divider()
+        gui.gui.add_markdown("---")
 
         # Scene info
         n = len(self.data["xyz"])
