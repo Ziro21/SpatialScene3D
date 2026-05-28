@@ -102,14 +102,22 @@ else:
 
 # %%
 # Install dependencies IN ORDER (order matters!)
+
+import os
+os.environ["TORCH_CUDA_ARCH_LIST"] = "7.5"
+os.environ["FORCE_CUDA"] = "1"
+
+# Step 0: Build curope manually first (the part that keeps failing)
+!cd {SLAM_DIR}/thirdparty/mast3r/dust3r/croco/models/curope && pip install .
+
 # Step 1: MASt3R (the 3D matching backbone)
-!pip install -e {SLAM_DIR}/thirdparty/mast3r
+!pip install --no-build-isolation -e {SLAM_DIR}/thirdparty/mast3r
 
 # Step 2: in3d (internal 3D utilities)
-!pip install -e {SLAM_DIR}/thirdparty/in3d
+!pip install --no-build-isolation -e {SLAM_DIR}/thirdparty/in3d
 
-# Step 3: MASt3R-SLAM itself (builds custom CUDA kernels — needs --no-build-isolation)
-!pip install --no-build-isolation -e {SLAM_DIR}
+# Step 3: MASt3R-SLAM itself (builds custom CUDA kernels)
+!cd {SLAM_DIR} && pip install --no-build-isolation -e .
 
 # Step 4: plyfile (for reading MASt3R-SLAM's PLY output)
 !pip install plyfile natsort
