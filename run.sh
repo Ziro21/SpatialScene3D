@@ -32,8 +32,8 @@ echo ""
 # --- Step 1: Preprocess (extract + filter frames) ---
 echo "[1/6] Preprocessing video → frames..."
 python -m preprocess.extract_frames \
-    --input "${VIDEO_PATH}" \
-    --output "data/${SCENE_NAME}/frames" \
+    --video "${VIDEO_PATH}" \
+    --output_dir "data/${SCENE_NAME}/frames" \
     --fps 3 \
     --height 518
 echo "  ✓ Frames saved to data/${SCENE_NAME}/frames/"

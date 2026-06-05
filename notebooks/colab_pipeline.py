@@ -122,7 +122,7 @@ os.environ["MAX_JOBS"] = "4"  # Prevent Colab RAM crash during compile
 !pip install --no-build-isolation -e {SLAM_DIR}/thirdparty/in3d
 
 # Step 5: MASt3R-SLAM itself (builds custom CUDA kernels)
-!cd {SLAM_DIR} && pip install --no-build-isolation -e .
+!cd {SLAM_DIR} && rm -rf build && pip install --no-build-isolation -e .
 
 # Step 6: extras
 !pip install plyfile natsort
@@ -478,19 +478,32 @@ print(f"\n✓ COLMAP workspace ready at {COLMAP_DIR}/")
 # **Expected time**: ~30-60 min on T4, ~15-30 min on A100.
 
 # %%
-# Install gsplat
+# Install gsplat and all trainer dependencies (avoiding broken wheel builds)
 !pip install gsplat==1.3.0
+!pip install tyro viser imageio[ffmpeg] tensorboard torchmetrics[image] opencv-python tqdm scipy nerfview splines pycolmap PyYAML piexif
 
 # Clone gsplat repo to access training scripts
 GSPLAT_REPO = "/content/gsplat"
 if not os.path.exists(GSPLAT_REPO):
-    !git clone https://github.com/nerfstudio-project/gsplat.git {GSPLAT_REPO}
+    !git clone -b v1.3.0 https://github.com/nerfstudio-project/gsplat.git {GSPLAT_REPO}
+    !touch {GSPLAT_REPO}/examples/datasets/__init__.py
+    !wget -O {GSPLAT_REPO}/examples/datasets/colmap.py https://github.com/nerfstudio-project/gsplat/raw/9b9f98a5b440531376b4a5386aea49f8e820203b/examples/datasets/colmap.py
+    !wget -O {GSPLAT_REPO}/examples/exif.py https://raw.githubusercontent.com/nerfstudio-project/gsplat/main/examples/exif.py
+    !wget -O {GSPLAT_REPO}/examples/datasets/exif.py https://raw.githubusercontent.com/nerfstudio-project/gsplat/main/examples/exif.py
+    !sed -i 's/align_principal_axes/align_principle_axes/g' {GSPLAT_REPO}/examples/datasets/colmap.py
+
+# %%
+# Pre-compile CUDA extensions (prevent Out-Of-Memory swap thrashing)
+print("Pre-compiling gsplat CUDA extensions (this takes ~5 minutes)...")
+!rm -rf ~/.cache/torch_extensions/
+!MAX_JOBS=2 python -c "import gsplat.cuda._backend"
+print("✓ Compilation finished!")
 
 # %%
 # Train gsplat
 os.makedirs(GSPLAT_OUTPUT, exist_ok=True)
 
-!cd {GSPLAT_REPO} && python examples/simple_trainer.py default \
+!cd {GSPLAT_REPO} && MAX_JOBS=1 python examples/simple_trainer.py default \
     --data_dir {COLMAP_DIR} \
     --data_factor 1 \
     --result_dir {GSPLAT_OUTPUT} \
@@ -499,19 +512,89 @@ os.makedirs(GSPLAT_OUTPUT, exist_ok=True)
 print("\n✓ gsplat training complete")
 
 # %%
-# Find the output .ply file
-gsplat_plys = glob.glob(f"{GSPLAT_OUTPUT}/**/*.ply", recursive=True)
-print(f"gsplat output files:")
-for p in gsplat_plys:
-    size_mb = os.path.getsize(p) / 1e6
-    print(f"  {p}: {size_mb:.1f} MB")
+# Convert gsplat .pt to standard .ply format
+import torch
+import numpy as np
+import glob
+import os
 
-if gsplat_plys:
-    FINAL_PLY = max(gsplat_plys, key=os.path.getsize)
-    print(f"\n→ Final Gaussian splat: {FINAL_PLY}")
+print("Installing plyfile...")
+!pip install -q plyfile
+from plyfile import PlyData, PlyElement
+
+# Find the latest checkpoint
+ckpt_paths = sorted(glob.glob(f"{GSPLAT_OUTPUT}/**/ckpts/*.pt", recursive=True))
+if not ckpt_paths:
+    print("⚠ No gsplat checkpoints found!")
 else:
-    FINAL_PLY = SLAM_PLY
-    print("⚠ No gsplat .ply — using MASt3R-SLAM .ply as fallback")
+    ckpt_path = ckpt_paths[-1]
+    print(f"Loading checkpoint: {ckpt_path}")
+    
+    ckpt = torch.load(ckpt_path, map_location="cpu")
+    splats = ckpt["splats"]
+    
+    means = splats["means"].numpy()
+    scales = splats["scales"].numpy()
+    quats = splats["quats"].numpy()
+    opacities = splats["opacities"].numpy()
+    sh0 = splats["sh0"].numpy()
+    shN = splats["shN"].numpy() if "shN" in splats else None
+    
+    N = means.shape[0]
+    sh0 = sh0.reshape(N, 3)
+    if shN is not None:
+        shN = shN.reshape(N, -1)
+    
+    # Create ply property datatypes
+    dtype_full = [
+        ('x', 'f4'), ('y', 'f4'), ('z', 'f4'),
+        ('nx', 'f4'), ('ny', 'f4'), ('nz', 'f4'),
+        ('f_dc_0', 'f4'), ('f_dc_1', 'f4'), ('f_dc_2', 'f4'),
+    ]
+    for i in range(45):
+        dtype_full.append((f'f_rest_{i}', 'f4'))
+    dtype_full.extend([
+        ('opacity', 'f4'),
+        ('scale_0', 'f4'), ('scale_1', 'f4'), ('scale_2', 'f4'),
+        ('rot_0', 'f4'), ('rot_1', 'f4'), ('rot_2', 'f4'), ('rot_3', 'f4')
+    ])
+    
+    elements = np.empty(N, dtype=dtype_full)
+    elements['x'] = means[:, 0]
+    elements['y'] = means[:, 1]
+    elements['z'] = means[:, 2]
+    elements['nx'] = 0
+    elements['ny'] = 0
+    elements['nz'] = 0
+    elements['f_dc_0'] = sh0[:, 0]
+    elements['f_dc_1'] = sh0[:, 1]
+    elements['f_dc_2'] = sh0[:, 2]
+    
+    if shN is not None:
+        for i in range(min(45, shN.shape[1])):
+            elements[f'f_rest_{i}'] = shN[:, i]
+    else:
+        for i in range(45):
+            elements[f'f_rest_{i}'] = 0
+            
+    elements['opacity'] = opacities.flatten()
+    elements['scale_0'] = scales[:, 0]
+    elements['scale_1'] = scales[:, 1]
+    elements['scale_2'] = scales[:, 2]
+    elements['rot_0'] = quats[:, 0] # w
+    elements['rot_1'] = quats[:, 1] # x
+    elements['rot_2'] = quats[:, 2] # y
+    elements['rot_3'] = quats[:, 3] # z
+    
+    out_ply = f"{GSPLAT_OUTPUT}/gsplat_final.ply"
+    el = PlyElement.describe(elements, 'vertex')
+    PlyData([el]).write(out_ply)
+    
+    size_mb = os.path.getsize(out_ply) / 1e6
+    print(f"\n✓ Successfully exported {N} Gaussians to .ply format!")
+    print(f"Final Gaussian splat: {out_ply} ({size_mb:.1f} MB)")
+    
+    FINAL_PLY = out_ply
 
 # %% [markdown]
 # ---

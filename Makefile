@@ -40,7 +40,7 @@ test:
 preprocess:
 	@if [ -z "$(VIDEO)" ]; then echo "Usage: make preprocess VIDEO=path/to/video.mp4 SCENE=scene1"; exit 1; fi
 	@if [ -z "$(SCENE)" ]; then echo "Usage: make preprocess VIDEO=path/to/video.mp4 SCENE=scene1"; exit 1; fi
-	python -m preprocess.extract_frames --input $(VIDEO) --output data/$(SCENE)/frames
+	python -m preprocess.extract_frames --video $(VIDEO) --output_dir data/$(SCENE)/frames
 
 # --- Interactive Viewer ---
 demo:
