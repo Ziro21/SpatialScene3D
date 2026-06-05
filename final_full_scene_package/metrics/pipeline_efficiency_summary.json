@@ -1,0 +1,198 @@
+{
+  "note": "Exact stage runtime was not recorded from the start of this run. This summary is based on saved outputs.",
+  "latest_checkpoint": "/content/scene3d_work/run_final/gsplat_output/ckpts/ckpt_29999_rank0.pt",
+  "metrics": [
+    {
+      "category": "Dataset",
+      "metric": "Total processed frames",
+      "value": 150,
+      "unit": "frames"
+    },
+    {
+      "category": "Dataset",
+      "metric": "Training frames",
+      "value": 135,
+      "unit": "frames"
+    },
+    {
+      "category": "Dataset",
+      "metric": "Held-out test frames requested",
+      "value": 15,
+      "unit": "frames"
+    },
+    {
+      "category": "Dataset",
+      "metric": "Held-out test frames evaluated",
+      "value": 15,
+      "unit": "frames"
+    },
+    {
+      "category": "Visual reconstruction",
+      "metric": "PSNR",
+      "value": 28.832300788747677,
+      "unit": "dB"
+    },
+    {
+      "category": "Visual reconstruction",
+      "metric": "SSIM",
+      "value": 0.9011347730954488,
+      "unit": "score"
+    },
+    {
+      "category": "Visual reconstruction",
+      "metric": "LPIPS",
+      "value": 0.05892428581913312,
+      "unit": "score"
+    },
+    {
+      "category": "Visual reconstruction",
+      "metric": "Saved comparison images",
+      "value": 10,
+      "unit": "images"
+    },
+    {
+      "category": "Gaussian reconstruction",
+      "metric": "Raw Gaussian count",
+      "value": 484460,
+      "unit": "Gaussians"
+    },
+    {
+      "category": "Gaussian reconstruction",
+      "metric": "Semantic Gaussian count",
+      "value": 484460,
+      "unit": "Gaussians"
+    },
+    {
+      "category": "Gaussian reconstruction",
+      "metric": "Pruned viewer Gaussian count",
+      "value": 380995,
+      "unit": "Gaussians"
+    },
+    {
+      "category": "Gaussian reconstruction",
+      "metric": "Gaussians per training frame",
+      "value": 3588.5925925925926,
+      "unit": "Gaussians/frame"
+    },
+    {
+      "category": "Gaussian reconstruction",
+      "metric": "Gaussians per processed frame",
+      "value": 3229.733333333333,
+      "unit": "Gaussians/frame"
+    },
+    {
+      "category": "Semantic output",
+      "metric": "Labelled Gaussians",
+      "value": 186794,
+      "unit": "Gaussians"
+    },
+    {
+      "category": "Semantic output",
+      "metric": "Labelled percentage",
+      "value": 38.557156421582796,
+      "unit": "%"
+    },
+    {
+      "category": "Semantic output",
+      "metric": "Unlabelled percentage",
+      "value": 61.442843578417204,
+      "unit": "%"
+    },
+    {
+      "category": "Semantic output",
+      "metric": "Labelled Gaussians per frame",
+      "value": 1245.2933333333333,
+      "unit": "Gaussians/frame"
+    },
+    {
+      "category": "2D masks",
+      "metric": "Total 2D masks",
+      "value": 3223,
+      "unit": "masks"
+    },
+    {
+      "category": "2D masks",
+      "metric": "Average masks per frame",
+      "value": 21.486666666666668,
+      "unit": "masks/frame"
+    },
+    {
+      "category": "2D masks",
+      "metric": "Saved mask PNG files",
+      "value": 3223,
+      "unit": "files"
+    },
+    {
+      "category": "Storage",
+      "metric": "Raw PLY size",
+      "value": 114.58169078826904,
+      "unit": "MB"
+    },
+    {
+      "category": "Storage",
+      "metric": "Semantic PLY size",
+      "value": 116.89188003540039,
+      "unit": "MB"
+    },
+    {
+      "category": "Storage",
+      "metric": "Pruned viewer PLY size",
+      "value": 90.11105632781982,
+      "unit": "MB"
+    },
+    {
+      "category": "Storage",
+      "metric": "Latest checkpoint size",
+      "value": 109.03888034820557,
+      "unit": "MB"
+    },
+    {
+      "category": "Storage",
+      "metric": "Frames directory size",
+      "value": 30.544921875,
+      "unit": "MB"
+    },
+    {
+      "category": "Storage",
+      "metric": "Masks directory size",
+      "value": 4.483529090881348,
+      "unit": "MB"
+    },
+    {
+      "category": "Storage",
+      "metric": "Test comparisons directory size",
+      "value": 3.909107208251953,
+      "unit": "MB"
+    },
+    {
+      "category": "Storage",
+      "metric": "Raw PLY MB per 100k Gaussians",
+      "value": 23.65142442890415,
+      "unit": "MB/100k Gaussians"
+    },
+    {
+      "category": "Pruning",
+      "metric": "Gaussians removed by pruning",
+      "value": 103465,
+      "unit": "Gaussians"
+    },
+    {
+      "category": "Pruning",
+      "metric": "Gaussian reduction by pruning",
+      "value": 21.35676836064897,
+      "unit": "%"
+    },
+    {
+      "category": "Pruning",
+      "metric": "File size reduction by pruning",
+      "value": 24.47063446044922,
+      "unit": "MB"
+    },
+    {
+      "category": "Pruning",
+      "metric": "File size reduction percentage",
+      "value": 21.35649621863892,
+      "unit": "%"
+    }
+  ]
+}
