@@ -94,6 +94,51 @@ def _worst(verdicts: List[str]) -> str:
     return "PASS"
 
 
+def _load_label_evidence(tables_dir: Path) -> Dict[str, Any]:
+    """Load per-label tables so the reasoning layer can name SPECIFIC failing
+    classes (Level 2), not just an aggregate weakness. Returns a compact, ranked
+    summary; tolerant of missing files. Pure stdlib csv (no pandas dependency)."""
+    import csv
+
+    out: Dict[str, Any] = {}
+
+    # 3D semantic coverage per class (smallest = the coverage gaps)
+    dist = tables_dir / "semantic_label_distribution.csv"
+    if dist.exists():
+        rows = []
+        with open(dist) as f:
+            for r in csv.DictReader(f):
+                if r["label_name"] == "unlabelled":
+                    continue
+                rows.append({
+                    "label": r["label_name"],
+                    "pct_of_total": round(float(r["percentage_of_total"]), 3),
+                })
+        rows.sort(key=lambda x: x["pct_of_total"])
+        out["smallest_3d_classes"] = rows[:6]   # the under-represented classes
+        out["largest_3d_classes"] = rows[-3:]
+
+    # 2D mask confidence per class (lowest = least reliable detections)
+    mask = tables_dir / "mask_quality_label_stats.csv"
+    if mask.exists():
+        rows = []
+        with open(mask) as f:
+            for r in csv.DictReader(f):
+                rows.append({
+                    "label": r["label"],
+                    "mask_count": int(r["mask_count"]),
+                    "mean_confidence": round(float(r["mean_confidence"]), 3),
+                })
+        # Only consider classes with enough masks to be meaningful
+        meaningful = [r for r in rows if r["mask_count"] >= 20]
+        meaningful.sort(key=lambda x: x["mean_confidence"])
+        out["lowest_confidence_classes"] = meaningful[:6]
+        over = sorted(rows, key=lambda x: -x["mask_count"])[:3]
+        out["most_detected_classes"] = over
+
+    return out
+
+
 # ----------------------------------------------------------------------------- #
 # Deterministic stage checks. Each returns (verdict, reason, evidence dict).
 # ----------------------------------------------------------------------------- #
@@ -216,23 +261,41 @@ def run_gate(m: Dict[str, Any]) -> Dict[str, Any]:
 # LLM reasoning layer (the genuinely agentic part). Bounded, evidence-grounded,
 # provider-agnostic via an OpenAI-compatible client. Degrades gracefully.
 # ----------------------------------------------------------------------------- #
-def _build_prompt(m: Dict[str, Any], gate: Dict[str, Any]) -> str:
+def _build_prompt(m: Dict[str, Any], gate: Dict[str, Any],
+                  label_evidence: Optional[Dict[str, Any]] = None) -> str:
+    label_block = ""
+    if label_evidence:
+        label_block = (
+            "\nPER-CLASS EVIDENCE (use this to name SPECIFIC failing classes, not "
+            "just an aggregate weakness):\n"
+            f"{json.dumps(label_evidence, indent=2)}\n"
+            "- smallest_3d_classes: classes with the least 3D coverage (the gaps).\n"
+            "- lowest_confidence_classes: classes whose 2D detections are least "
+            "reliable (mean detection confidence; only classes with >=20 masks).\n"
+            "- most_detected_classes: classes that may be over-detected.\n"
+        )
     return (
         "You are a spatial-AI QA supervisor reviewing a finished indoor 3D "
         "reconstruction run (monocular video -> COLMAP -> 3D Gaussian Splatting -> "
         "open-vocab semantic lifting). A deterministic stage-gate has already "
         "produced per-stage verdicts. Using ONLY the numbers provided, write a short "
-        "release report that (1) states the overall release decision, (2) gives a "
-        "one-line justified verdict per stage, (3) identifies the single DOMINANT "
-        "weakness and the most likely ROOT CAUSE, and (4) recommends ONE concrete, "
-        "specific next action to improve the run. Cite real numbers. Do not invent "
-        "metrics. Be concise and honest about limitations.\n\n"
-        f"DETERMINISTIC GATE:\n{json.dumps(gate, indent=2)}\n\n"
-        f"RAW METRICS:\n{json.dumps(m, indent=2)[:6000]}\n"
+        "release report that:\n"
+        "  (1) states the overall release decision;\n"
+        "  (2) gives a one-line justified verdict per stage;\n"
+        "  (3) identifies the single DOMINANT weakness and the most likely ROOT "
+        "CAUSE, naming the SPECIFIC object/structure classes responsible (use the "
+        "per-class evidence) and citing their numbers;\n"
+        "  (4) recommends 2-3 concrete, class-specific next actions (e.g. which "
+        "detection prompts to add or which class thresholds to adjust).\n"
+        "Cite real numbers. Do not invent metrics. Be concise and honest.\n\n"
+        f"DETERMINISTIC GATE:\n{json.dumps(gate, indent=2)}\n"
+        f"{label_block}\n"
+        f"RAW SUMMARY METRICS:\n{json.dumps(m, indent=2)[:5000]}\n"
     )
 
 
-def run_llm_reasoning(m: Dict[str, Any], gate: Dict[str, Any]) -> Optional[str]:
+def run_llm_reasoning(m: Dict[str, Any], gate: Dict[str, Any],
+                      label_evidence: Optional[Dict[str, Any]] = None) -> Optional[str]:
     """Single bounded LLM call. Returns the diagnosis text, or None if disabled
     (no key) or the call fails. Never raises into the pipeline."""
     api_key = os.environ.get("LLM_API_KEY")
@@ -247,7 +310,7 @@ def run_llm_reasoning(m: Dict[str, Any], gate: Dict[str, Any]) -> Optional[str]:
             model=model,
             messages=[
                 {"role": "system", "content": "You are a precise, honest QA reviewer."},
-                {"role": "user", "content": _build_prompt(m, gate)},
+                {"role": "user", "content": _build_prompt(m, gate, label_evidence)},
             ],
             temperature=0.2,
             max_tokens=900,
@@ -304,15 +367,23 @@ def write_reports(gate: Dict[str, Any], llm_text: Optional[str], llm_live: bool,
     (output_dir / "agentic_qa_report.md").write_text("\n".join(md) + "\n")
 
 
-def supervise(metrics_dir: Path, output_dir: Path) -> Dict[str, Any]:
-    """Top-level entry point: load metrics, run the gate, run LLM reasoning (or
-    reuse a saved diagnosis), and write all three report artefacts."""
+def supervise(metrics_dir: Path, output_dir: Path,
+              tables_dir: Optional[Path] = None) -> Dict[str, Any]:
+    """Top-level entry point: load metrics + per-label evidence, run the gate, run
+    LLM reasoning (or reuse a saved diagnosis), and write all report artefacts.
+
+    tables_dir defaults to a sibling 'tables/' next to metrics_dir (the layout the
+    pipeline produces), so per-class evidence is picked up automatically."""
     m = _load_metrics(metrics_dir)
     if not m:
         raise FileNotFoundError(f"No metric JSONs found in {metrics_dir}")
     gate = run_gate(m)
 
-    llm_text = run_llm_reasoning(m, gate)
+    if tables_dir is None:
+        tables_dir = metrics_dir.parent / "tables"
+    label_evidence = _load_label_evidence(tables_dir) if tables_dir.exists() else {}
+
+    llm_text = run_llm_reasoning(m, gate, label_evidence)
     llm_live = llm_text is not None and not llm_text.startswith("[LLM reasoning unavailable")
 
     # Graceful fallback: if no live call, reuse a previously saved diagnosis.
