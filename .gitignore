@@ -23,12 +23,22 @@ env/
 *.swo
 .DS_Store
 
-# --- Data (too large for Git) ---
-data/*/frames/
-data/*/colmap/
-data/*/masks/
-data/*/semantics/
+# --- Large intermediate / generated data (no marking value) ---
+data/
 outputs/
+outputs-v6/
+outputs-v7/
+outputs-v8/
+output-v7.5/
+room_frames.zip
+temp_data.zip
+*.zip
+
+# --- Heavy final scene PLYs that exceed GitHub's 100MB limit ---
+# The full + semantic PLYs (>100MB each) cannot be pushed. The pruned viewer
+# PLY (90MB) IS tracked via LFS so the scene can still be loaded in the viewer.
+final_full_scene_package/scene_outputs/splat_final.ply
+final_full_scene_package/scene_outputs/splat_semantic.ply
 
 # --- Model Weights (downloaded separately) ---
 checkpoints/
