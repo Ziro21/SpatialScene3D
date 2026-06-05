@@ -294,10 +294,26 @@ def _build_prompt(m: Dict[str, Any], gate: Dict[str, Any],
     )
 
 
+def _load_dotenv() -> None:
+    """Load a local, gitignored .env (LLM_API_KEY=...) into the environment if it
+    exists, so the key never has to be typed or committed. Existing environment
+    variables take precedence. Pure stdlib — no python-dotenv dependency."""
+    for path in (Path(".env"), Path(__file__).resolve().parent / ".env"):
+        if path.exists():
+            for line in path.read_text().splitlines():
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                k, _, v = line.partition("=")
+                os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+            break
+
+
 def run_llm_reasoning(m: Dict[str, Any], gate: Dict[str, Any],
                       label_evidence: Optional[Dict[str, Any]] = None) -> Optional[str]:
     """Single bounded LLM call. Returns the diagnosis text, or None if disabled
     (no key) or the call fails. Never raises into the pipeline."""
+    _load_dotenv()
     api_key = os.environ.get("LLM_API_KEY")
     if not api_key:
         return None

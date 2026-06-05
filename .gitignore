@@ -47,6 +47,11 @@ checkpoints/
 *.bin
 *.safetensors
 
+# --- Secrets (NEVER commit) ---
+.env
+*.key
+secrets.json
+
 # --- Temporary ---
 *.log
 .mypy_cache/
