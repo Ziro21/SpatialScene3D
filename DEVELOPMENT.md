@@ -81,6 +81,40 @@ held out 15 (every 10th registered frame) for evaluation. It produced:
   distribution and 2D→3D comparison tables, and ground-truth-vs-render
   comparison images.
 
+## Phase 5 — Agentic workflow design (self-evaluating pipeline)
+
+The task brief intentionally left the approach open and invited "any tools,
+models, frameworks, or agentic workflows you find effective." Rather than bolt a
+heavy multi-agent framework onto a finished pipeline (which tends to read as
+decoration), the project takes a **hybrid stance**: the reconstruction core stays
+deterministic and auditable, and a **bounded agentic layer** is added on top to
+self-assess release-readiness.
+
+This lives in `qa_supervisor.py` and runs as Section 10 of the notebook. It has
+two tiers:
+
+- **Deterministic stage-gate.** Auditable rules over the saved metrics produce a
+  `PASS / WARNING / FAIL` verdict per stage (visual reconstruction, semantic
+  lifting, mask quality, PLY quality, efficiency) and an overall release decision.
+  Reproducible and never wrong about its own numbers.
+- **LLM reasoning layer (the genuinely agentic part).** A single bounded,
+  provider-agnostic LLM call (OpenAI-compatible; used here with Groq's Llama 3.3
+  70B, swappable to OpenAI / Gemini / local Ollama) reasons over the same metrics
+  plus the gate verdicts to diagnose the *dominant* weakness, identify the likely
+  *root cause*, and recommend *one concrete next action*. It is constrained to
+  cite the real numbers, and it degrades gracefully — with no API key the gate
+  still runs and a saved diagnosis from a prior live run is shown.
+
+On the final run the supervisor returns **RELEASE WITH LIMITATIONS**: visual
+reconstruction, mask quality, and efficiency PASS; semantic lifting and raw-PLY
+opacity are WARNINGs. The LLM layer correctly identifies incomplete semantic
+coverage (flat-surface under-segmentation) as the dominant weakness.
+
+Why this is the relevant creative angle for a humanoid/perception role: a real
+perception system must know *when its own output is trustworthy* and when to
+re-acquire data. This layer is a small, honest demonstration of exactly that —
+the pipeline reasons about its own quality and gates its own release.
+
 ## Known limitations (carried into the submission honestly)
 
 - ~61% of Gaussians remain unlabelled; large flat surfaces (walls) under-segment.
