@@ -14,19 +14,19 @@
 
 ## Agentic diagnosis (LLM reasoning layer)
 
-*Source: live LLM call.*
+*Source: genuine live LLM call (Groq Llama 3.3 70B) on 2026-06-06.*
 
 **Release Report**
 
 1. **Overall Release Decision**: RELEASE WITH LIMITATIONS
 2. **Per-Stage Verdicts**:
-   - Visual reconstruction: PASS, with high PSNR (28.83 dB) and SSIM (0.901) values.
-   - Semantic 3D lifting: WARNING, due to incomplete coverage (38.6% of Gaussians labelled).
-   - 2D mask quality: PASS, with consistent coverage (21.5 masks/frame) and moderate open-vocab confidence (0.47).
-   - Gaussian PLY quality: WARNING, due to 20.6% low-opacity floaters in the raw PLY.
+   - Visual reconstruction: PASS, with held-out PSNR 28.83 dB, SSIM 0.901, LPIPS 0.059 on 15 unseen frames.
+   - Semantic 3D lifting: WARNING, due to 38.6% of Gaussians labelled across 22 classes, indicating incomplete coverage.
+   - 2D mask quality: PASS, with 150/150 frames producing masks and a mean confidence of 0.47.
+   - Gaussian PLY quality: WARNING, due to 20.6% low-opacity floaters in the raw PLY, although the pruned viewer PLY removes them.
    - Efficiency / packaging: PASS, with all evaluation artifacts and packages produced.
-3. **Dominant Weakness and Root Cause**: The dominant weakness is the incomplete coverage of semantic 3D lifting, with a labelled fraction of only 38.57%. The root cause is likely the under-detection of large flat surfaces, such as ceilings (11.60% of total) and walls, which have low confidence detections (e.g., wall: 0.361 mean confidence). Specifically, classes like "curtain" (0.001% of total), "sink" (0.004% of total), and "fireplace" (0.015% of total) have very low coverage.
+3. **Dominant Weakness and Root Cause**: The dominant weakness is the incomplete coverage of semantic 3D lifting, particularly for large flat surfaces. The root cause is likely the under-segmentation of classes such as "ceiling" (11.597% of total) and "wall" (low confidence, 0.361 mean confidence). Specific object/structure classes responsible include "curtain" (0.001% of total), "sink" (0.004% of total), and "fireplace" (0.015% of total).
 4. **Recommended Next Actions**:
-   - Add detection prompts for under-detected classes like "curtain", "sink", and "fireplace" to improve their coverage.
-   - Adjust the class thresholds for large flat surfaces like "ceiling" and "wall" to increase their detection confidence.
-   - Implement a post-processing step to merge small, isolated Gaussians into larger, more coherent objects, which may help improve the coverage of classes like "table" (0.079% of total) and "lamp" (0.089% of total).
+   - Add detection prompts for under-segmented classes like "curtain", "sink", and "fireplace" to improve their coverage.
+   - Adjust the class thresholds for "wall" and "ceiling" to increase their confidence and coverage.
+   - Implement a post-processing step to merge small, low-confidence segments into larger, more coherent regions, particularly for classes like "table" (0.079% of total) and "lamp" (0.089% of total).

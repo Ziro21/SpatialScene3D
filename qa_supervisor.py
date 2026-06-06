@@ -340,13 +340,14 @@ def run_llm_reasoning(m: Dict[str, Any], gate: Dict[str, Any],
 # Report writers
 # ----------------------------------------------------------------------------- #
 def write_reports(gate: Dict[str, Any], llm_text: Optional[str], llm_live: bool,
-                  output_dir: Path) -> None:
+                  output_dir: Path, llm_generated_utc: Optional[str] = None) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # JSON
     payload = dict(gate)
     payload["llm_diagnosis"] = llm_text
     payload["llm_diagnosis_source"] = "live" if llm_live else ("saved" if llm_text else "none")
+    payload["llm_diagnosis_generated_utc"] = llm_generated_utc
     with open(output_dir / "agentic_qa_report.json", "w") as f:
         json.dump(payload, f, indent=2)
 
@@ -373,13 +374,19 @@ def write_reports(gate: Dict[str, Any], llm_text: Optional[str], llm_live: bool,
         md.append(f"| {s['stage']} | **{s['verdict']}** | {s['reason']} |")
     md += ["", "## Agentic diagnosis (LLM reasoning layer)", ""]
     if llm_text:
-        tag = "live LLM call" if llm_live else "saved from a prior live run"
-        md.append(f"*Source: {tag}.*")
+        when = f" on {llm_generated_utc[:10]}" if llm_generated_utc else ""
+        if llm_live:
+            tag = f"genuine live LLM call (Groq Llama 3.3 70B){when}."
+        else:
+            tag = (f"real LLM output captured from a live run{when}, shown here as a "
+                   "saved artefact (no API key was set this run). Set `LLM_API_KEY` "
+                   "to regenerate it live — see README.")
+        md.append(f"*Source: {tag}*")
         md += ["", llm_text]
     else:
-        md.append("*LLM layer not run (no `LLM_API_KEY` set). The deterministic gate "
-                  "above is the authoritative verdict; set a key to regenerate the "
-                  "natural-language diagnosis.*")
+        md.append("*LLM layer not run (no `LLM_API_KEY` set, and no saved diagnosis "
+                  "found). The deterministic gate above is the authoritative verdict; "
+                  "set a key to generate the natural-language diagnosis.*")
     (output_dir / "agentic_qa_report.md").write_text("\n".join(md) + "\n")
 
 
@@ -401,18 +408,22 @@ def supervise(metrics_dir: Path, output_dir: Path,
 
     llm_text = run_llm_reasoning(m, gate, label_evidence)
     llm_live = llm_text is not None and not llm_text.startswith("[LLM reasoning unavailable")
+    llm_when = datetime.now(timezone.utc).isoformat() if llm_live else None
 
-    # Graceful fallback: if no live call, reuse a previously saved diagnosis.
+    # Graceful fallback: if no live call, reuse a previously saved diagnosis and
+    # preserve its original generation date so the report stays honest about when
+    # the real LLM output was produced.
     saved_path = output_dir / "agentic_qa_report.json"
     if not llm_live and saved_path.exists():
         try:
             prev = json.loads(saved_path.read_text())
             if prev.get("llm_diagnosis") and prev.get("llm_diagnosis_source") in ("live", "saved"):
                 llm_text = prev["llm_diagnosis"]
+                llm_when = prev.get("llm_diagnosis_generated_utc")
         except Exception:
             pass
 
-    write_reports(gate, llm_text, llm_live, output_dir)
+    write_reports(gate, llm_text, llm_live, output_dir, llm_when)
     return gate
 
 
