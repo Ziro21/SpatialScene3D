@@ -186,19 +186,24 @@ Phone Video (.mp4)
 
 ```
 SpatialScene3D/
-├── notebook_v10_5.ipynb            # Final end-to-end Colab pipeline (the deliverable)
-├── notebook_v{3,5,8,10}.ipynb      # Earlier versions (development history)
+├── notebook_v10_5.ipynb            # Final end-to-end Colab pipeline (THE deliverable)
 ├── qa_supervisor.py                # Agentic QA & release gate
+├── convert.py                      # PLY → .splat helper (drag-drop web viewer)
 ├── preprocess/  geometry/  semantics/  viewer/  eval/   # Local Python package
-├── notebooks/                      # Original cloud-pipeline entry point
-├── tests/                          # pytest suite for the local modules
+├── notebooks/                      # Original cloud-pipeline entry point + helpers
+├── tests/                          # pytest suite for the local modules (53 tests)
 ├── final_report_package v10.5/     # Lightweight evidence (metrics, tables, images, qa)
 ├── final_full_scene_package v10.5/ # Full evidence + viewer PLY (LFS)
 ├── video1-final/outputs/           # CLIP embeddings + masks archive
+├── assets/videos/                  # Example input videos (LFS)
+├── archive/notebooks/              # Earlier notebook versions (dev history + index)
 ├── DESIGN.md                       # Technical design memo (incl. MASt3R rationale)
 ├── DEVELOPMENT.md                  # Engineering timeline & honest decisions
-├── README.md  requirements.txt  Makefile  run.sh
+├── README.md  requirements.txt  Makefile  run.sh  download_weights.sh
 ```
+
+> Development history (v3 → v10.5) is preserved in
+> [`archive/notebooks/`](archive/notebooks/) with a progression index.
 
 ---
 

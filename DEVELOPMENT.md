@@ -77,8 +77,8 @@ held out 15 (every 10th registered frame) for evaluation. It produced:
   generalisation metrics on unseen frames.
 - 484,460 Gaussians; 186,794 (38.6%) semantically labelled across 22 clean
   classes.
-- An evaluation evidence bundle (`final_report_package/`): metrics JSON, label
-  distribution and 2D→3D comparison tables, and ground-truth-vs-render
+- An evaluation evidence bundle (`final_report_package v10.5/`): metrics JSON,
+  label distribution and 2D→3D comparison tables, and ground-truth-vs-render
   comparison images.
 
 ## Phase 5 — Agentic workflow design (self-evaluating pipeline)
