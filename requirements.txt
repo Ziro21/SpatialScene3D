@@ -1,8 +1,10 @@
 # ============================================================
-# scene3d — Local Mac Dependencies (M1 8GB)
+# SpatialScene3D — Local dependencies
 # ============================================================
-# These are the packages you install on your Mac.
-# Colab has its own installs inside the notebook.
+# These are the packages for the LOCAL tools: the interactive viewer,
+# the semantic-lifting / eval helpers, and the agentic QA layer.
+# The heavy GPU stages (COLMAP, gsplat, Grounding DINO + SAM2) install
+# their own pinned dependencies inside the Colab notebook.
 # ============================================================
 
 # --- Core ---
@@ -12,6 +14,8 @@ Pillow==10.4.0
 scikit-image==0.24.0
 opencv-python-headless==4.10.0.84
 tqdm==4.66.4
+plyfile==1.0.3
+pandas==2.2.2
 
 # --- PyTorch (MPS-enabled, Apple Silicon) ---
 torch==2.4.1
@@ -19,16 +23,20 @@ torchvision==0.19.1
 
 # --- 3D Viewer ---
 viser==0.2.3
-open3d>=0.18.0
 
-# --- CLIP (for text embeddings, runs on CPU) ---
+# --- CLIP (open-vocabulary text embeddings) ---
 git+https://github.com/openai/CLIP.git
 
-# --- Grounded-SAM-2 deps (used on Colab, but needed for import) ---
+# --- Semantics / detection support (import-time deps) ---
 supervision==0.22.0
 transformers==4.44.2
 
-# --- Dev Quality ---
+# --- Agentic QA layer (LLM reasoning; provider-agnostic OpenAI-compatible client) ---
+# Used by qa_supervisor.py. Optional at runtime: the deterministic gate works
+# without it; the LLM reasoning layer needs it plus an LLM_API_KEY.
+openai>=1.40.0
+
+# --- Dev quality ---
 pytest==8.3.2
 mypy==1.11.1
 black==24.8.0
@@ -36,4 +44,3 @@ isort==5.13.2
 
 # --- Utilities ---
 matplotlib==3.9.2
-plyfile==1.0.3
