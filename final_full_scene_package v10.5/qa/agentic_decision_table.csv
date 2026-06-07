@@ -1,0 +1,6 @@
+stage,verdict,reason
+"Visual reconstruction","PASS","Held-out PSNR 28.93 dB, SSIM 0.903, LPIPS 0.058 on 15 unseen frames."
+"Semantic 3D lifting","WARNING","37.4% of Gaussians labelled across 22 classes. Meaningful but incomplete coverage (large flat surfaces under-segment)."
+"2D mask quality","PASS","150/150 frames produced masks (21.5/frame), mean confidence 0.47 — consistent coverage, moderate open-vocab confidence."
+"Gaussian PLY quality","WARNING","Raw PLY has 20.8% low-opacity floaters; the pruned viewer PLY removes them (now 0.0%). Viewer output is clean."
+"Efficiency / packaging","PASS","150 frames -> 484707 Gaussians; all evaluation artefacts and packages produced. Runtime not instrumented for this run."

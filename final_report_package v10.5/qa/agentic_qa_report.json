@@ -1,0 +1,56 @@
+{
+  "release_decision": "RELEASE WITH LIMITATIONS",
+  "overall_verdict": "WARNING",
+  "stages": [
+    {
+      "stage": "Visual reconstruction",
+      "verdict": "PASS",
+      "reason": "Held-out PSNR 28.93 dB, SSIM 0.903, LPIPS 0.058 on 15 unseen frames.",
+      "evidence": {
+        "psnr": 28.926003027454193,
+        "ssim": 0.9026002486546835,
+        "lpips": 0.058430341879526775
+      }
+    },
+    {
+      "stage": "Semantic 3D lifting",
+      "verdict": "WARNING",
+      "reason": "37.4% of Gaussians labelled across 22 classes. Meaningful but incomplete coverage (large flat surfaces under-segment).",
+      "evidence": {
+        "labelled_fraction": 0.37448602970454314,
+        "unique_labels": 22
+      }
+    },
+    {
+      "stage": "2D mask quality",
+      "verdict": "PASS",
+      "reason": "150/150 frames produced masks (21.5/frame), mean confidence 0.47 \u2014 consistent coverage, moderate open-vocab confidence.",
+      "evidence": {
+        "frame_coverage": 1.0,
+        "mean_confidence": 0.46757833766944656
+      }
+    },
+    {
+      "stage": "Gaussian PLY quality",
+      "verdict": "WARNING",
+      "reason": "Raw PLY has 20.8% low-opacity floaters; the pruned viewer PLY removes them (now 0.0%). Viewer output is clean.",
+      "evidence": {
+        "raw_low_opacity_pct": 20.81257336906626,
+        "pruned_low_opacity_pct": 0.0
+      }
+    },
+    {
+      "stage": "Efficiency / packaging",
+      "verdict": "PASS",
+      "reason": "150 frames -> 484707 Gaussians; all evaluation artefacts and packages produced. Runtime not instrumented for this run.",
+      "evidence": {
+        "frames": 150,
+        "gaussians": 484707
+      }
+    }
+  ],
+  "generated_utc": "2026-06-07T15:49:54.318529+00:00",
+  "llm_diagnosis": "**Release Decision:** RELEASE WITH LIMITATIONS\n\n**Stage Verdicts:**\n1. Visual reconstruction: PASS - Held-out PSNR 28.93 dB, SSIM 0.903, LPIPS 0.058 on 15 unseen frames.\n2. Semantic 3D lifting: WARNING - 37.4% of Gaussians labelled across 22 classes, with incomplete coverage.\n3. 2D mask quality: PASS - 150/150 frames produced masks, mean confidence 0.47.\n4. Gaussian PLY quality: WARNING - Raw PLY has 20.8% low-opacity floaters, pruned viewer PLY removes them.\n5. Efficiency / packaging: PASS - 150 frames -> 484707 Gaussians, all evaluation artefacts and packages produced.\n\n**Dominant Weakness and Root Cause:**\nThe dominant weakness is the incomplete semantic 3D lifting coverage, particularly for large flat surfaces. The root cause is likely the under-detection of certain classes, such as \"curtain\" (0.001% of total), \"sink\" (0.004% of total), and \"fireplace\" (0.027% of total). These classes have low coverage, indicating that the model may not be effectively detecting and labelling these objects.\n\n**Recommended Next Actions:**\n1. Add detection prompts for under-detected classes, such as \"curtain\", \"sink\", and \"fireplace\", to improve their coverage.\n2. Adjust the class thresholds for \"wall\" and \"ceiling\" to reduce over-detection and improve the overall semantic 3D lifting quality.\n3. Increase the mean confidence threshold for \"sink\" and \"mirror\" to 0.4 to improve the reliability of their detections, as they currently have low mean confidence (0.345 and 0.361, respectively).",
+  "llm_diagnosis_source": "live",
+  "llm_diagnosis_generated_utc": "2026-06-07T15:49:56.874986+00:00"
+}
