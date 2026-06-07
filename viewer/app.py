@@ -714,10 +714,18 @@ def main() -> None:
     if args.splat:
         ply_path = args.splat
     else:
-        # Try semantic PLY first, fall back to raw PLY
+        # Prefer the semantic PLY (has per-Gaussian labels for Semantic / Text
+        # Query modes); fall back to the raw splat only if it is missing.
         semantic_ply = os.path.join(args.output_dir, args.scene, "splat_semantic.ply")
         raw_ply = os.path.join(args.output_dir, args.scene, "splat.ply")
-        ply_path = semantic_ply if os.path.exists(semantic_ply) else raw_ply
+        if os.path.exists(semantic_ply):
+            ply_path = semantic_ply
+        else:
+            ply_path = raw_ply
+            print(
+                f"  ℹ No splat_semantic.ply for scene '{args.scene}' — falling back "
+                f"to the raw splat. Semantic / Text Query modes will be disabled."
+            )
 
     masks_dir = os.path.join(args.data_dir, args.scene, "masks")
     embeddings_path = (
@@ -743,6 +751,19 @@ def main() -> None:
 
     splat_data = load_semantic_ply(ply_path)
     label_names = load_label_mapping(ply_path)
+
+    # Confirm the loaded PLY actually carries semantic labels. The pruned viewer
+    # PLY (splat_raw_pruned_for_viewer.ply) has none, so Semantic / Text Query
+    # modes would silently do nothing — warn clearly and point at the right file.
+    if splat_data.get("semantic_label") is None:
+        print(
+            "\n  ⚠ This PLY has NO semantic labels — Semantic and Text Query modes\n"
+            "    will not work. For those modes use the semantic PLY, e.g.:\n"
+            "      --splat \"final_full_scene_package v10.5/scene_outputs/splat_semantic.ply\""
+        )
+    else:
+        n_lab = int((splat_data["semantic_label"] > 0).sum())
+        print(f"  ✓ Semantic PLY: {n_lab:,} labelled Gaussians — Semantic / Text Query enabled")
 
     clip_embs = None
     if os.path.exists(embeddings_path):
