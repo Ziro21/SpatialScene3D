@@ -691,6 +691,12 @@ def main() -> None:
         help="Direct path to .ply file (overrides --scene)",
     )
     parser.add_argument(
+        "--embeddings",
+        type=str,
+        default=None,
+        help="Direct path to CLIP embeddings .npz (overrides --scene)",
+    )
+    parser.add_argument(
         "--port",
         type=int,
         default=8080,
@@ -714,7 +720,11 @@ def main() -> None:
         ply_path = semantic_ply if os.path.exists(semantic_ply) else raw_ply
 
     masks_dir = os.path.join(args.data_dir, args.scene, "masks")
-    embeddings_path = os.path.join(args.output_dir, args.scene, "embeddings.npz")
+    embeddings_path = (
+        args.embeddings
+        if args.embeddings
+        else os.path.join(args.output_dir, args.scene, "embeddings.npz")
+    )
 
     print("\n═══ scene3d Interactive Viewer ═══\n")
     print(f"  Scene: {args.scene}")
