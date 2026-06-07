@@ -27,6 +27,10 @@ This moves the system from "reconstruction + fixed labels" toward **queryable
 scene understanding**, which is the more useful capability for a spatial-AI /
 robotics context.
 
+A worked demonstration with real query results and a heatmap visualisation is in
+[`CLIP_QUERY_DEMO.md`](CLIP_QUERY_DEMO.md) (e.g. querying `"sofa"` lights up the
+sofa region).
+
 ---
 
 ## 2. Packaging and artefact accessibility

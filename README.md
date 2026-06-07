@@ -178,7 +178,7 @@ Phone Video (.mp4)
 | **Depth** | Viridis colourmap — distance from scene centroid |
 | **Normals** | PCA-estimated surface normals as RGB |
 | **Semantic** | Gaussians coloured by class label (sofa, door, ceiling, …) |
-| **Text Query** | Type any text → CLIP heatmap highlights matching objects |
+| **Text Query** | Type any text → CLIP heatmap highlights matching objects ([demo](final_report_package%20v10.5/report/CLIP_QUERY_DEMO.md)) |
 
 ---
 

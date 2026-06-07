@@ -314,11 +314,12 @@ def compute_query_colours(
         import clip as clip_module
         import torch
 
-        # Load CLIP and encode the query text
+        # Load CLIP and encode the query text.
+        # clip.load() returns (model, preprocess) — two values, not three.
         try:
-            model, _, _ = clip_module.load("ViT-L/14", device=device)
+            model, _ = clip_module.load("ViT-L/14", device=device)
         except RuntimeError:
-            model, _, _ = clip_module.load("ViT-B/32", device=device)
+            model, _ = clip_module.load("ViT-B/32", device=device)
 
         with torch.no_grad():
             text_tokens = clip_module.tokenize([query_text]).to(device)
