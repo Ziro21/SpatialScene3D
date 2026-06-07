@@ -52,7 +52,12 @@ honest generalisation numbers, not training-set scores.
 The held-out test PSNR (28.93 dB) essentially matches the training PSNR, confirming
 no train/test leakage. Full evidence — metrics JSON, per-class tables, and
 ground-truth-vs-render comparison images — is in
-[`final_report_package v10.5/`](final_report_package%20v10.5).
+[`final_report_package v10.5/`](final_report_package%20v10.5). The evaluation is
+written up in two files there: the auto-generated
+[`final_evaluation_summary.md`](final_report_package%20v10.5/report/final_evaluation_summary.md)
+(numeric metrics) and
+[`EVALUATION_ADDENDUM.md`](final_report_package%20v10.5/report/EVALUATION_ADDENDUM.md)
+(open-vocabulary CLIP search, packaging/accessibility, and the agentic QA gate).
 
 ---
 

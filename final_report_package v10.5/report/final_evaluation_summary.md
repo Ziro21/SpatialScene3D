@@ -1,6 +1,8 @@
 
 # Final Evaluation Summary
 
+> **Note:** this file is auto-generated from the numeric metrics and covers visual reconstruction, Gaussian counts, 3D semantic coverage, 2D mask quality, and storage. For the parts not captured here — open-vocabulary CLIP search, artefact packaging/accessibility, and the agentic QA & release gate — see [`EVALUATION_ADDENDUM.md`](EVALUATION_ADDENDUM.md).
+
 ## Overall result
 
 The final pipeline successfully converted a monocular indoor video into a dense 3D Gaussian Splatting reconstruction with semantic labels and quantitative evaluation evidence.
