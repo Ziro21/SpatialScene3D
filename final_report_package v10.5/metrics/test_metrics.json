@@ -1,0 +1,134 @@
+{
+  "protocol": "hold-out every 10th registered frame",
+  "eval_mode": "test",
+  "n_train_frames": 135,
+  "n_requested_test_frames": 15,
+  "n_evaluated_frames": 15,
+  "frames_evaluated": [
+    "000010.png",
+    "000020.png",
+    "000030.png",
+    "000040.png",
+    "000050.png",
+    "000060.png",
+    "000070.png",
+    "000080.png",
+    "000090.png",
+    "000100.png",
+    "000110.png",
+    "000120.png",
+    "000130.png",
+    "000140.png",
+    "000150.png"
+  ],
+  "psnr": 28.926003027454193,
+  "ssim": 0.9026002486546835,
+  "lpips": 0.058430341879526775,
+  "per_frame": [
+    {
+      "frame": "000010.png",
+      "psnr": 28.586886585517945,
+      "ssim": 0.9309336543083191,
+      "lpips": 0.04790443927049637,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000010.png"
+    },
+    {
+      "frame": "000020.png",
+      "psnr": 30.462810396570763,
+      "ssim": 0.939133882522583,
+      "lpips": 0.05162034183740616,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000020.png"
+    },
+    {
+      "frame": "000030.png",
+      "psnr": 30.255757236067446,
+      "ssim": 0.9334689974784851,
+      "lpips": 0.05117640644311905,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000030.png"
+    },
+    {
+      "frame": "000040.png",
+      "psnr": 30.5482494959975,
+      "ssim": 0.9296793937683105,
+      "lpips": 0.04683560132980347,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000040.png"
+    },
+    {
+      "frame": "000050.png",
+      "psnr": 30.043530440789073,
+      "ssim": 0.9370734095573425,
+      "lpips": 0.04392657428979874,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000050.png"
+    },
+    {
+      "frame": "000060.png",
+      "psnr": 28.890343353742665,
+      "ssim": 0.9267611503601074,
+      "lpips": 0.04755334556102753,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000060.png"
+    },
+    {
+      "frame": "000070.png",
+      "psnr": 27.877638374494246,
+      "ssim": 0.9177424311637878,
+      "lpips": 0.05240597203373909,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000070.png"
+    },
+    {
+      "frame": "000080.png",
+      "psnr": 28.13268225608365,
+      "ssim": 0.9085060954093933,
+      "lpips": 0.05107412114739418,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000080.png"
+    },
+    {
+      "frame": "000090.png",
+      "psnr": 26.592486841114038,
+      "ssim": 0.9040217399597168,
+      "lpips": 0.04474126547574997,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000090.png"
+    },
+    {
+      "frame": "000100.png",
+      "psnr": 26.816907211871165,
+      "ssim": 0.9004239439964294,
+      "lpips": 0.05580965429544449,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000100.png"
+    },
+    {
+      "frame": "000110.png",
+      "psnr": 27.210677819910053,
+      "ssim": 0.8747536540031433,
+      "lpips": 0.055575549602508545,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000110.png"
+    },
+    {
+      "frame": "000120.png",
+      "psnr": 29.194832076070135,
+      "ssim": 0.8605104088783264,
+      "lpips": 0.05413313955068588,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000120.png"
+    },
+    {
+      "frame": "000130.png",
+      "psnr": 30.67315233757084,
+      "ssim": 0.9051475524902344,
+      "lpips": 0.08116263151168823,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000130.png"
+    },
+    {
+      "frame": "000140.png",
+      "psnr": 31.207136022326402,
+      "ssim": 0.8945757746696472,
+      "lpips": 0.08935637772083282,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000140.png"
+    },
+    {
+      "frame": "000150.png",
+      "psnr": 27.39695496368686,
+      "ssim": 0.776271641254425,
+      "lpips": 0.10317970812320709,
+      "gt_path": "/content/scene3d_work/run_final/test_images/000150.png"
+    }
+  ]
+}

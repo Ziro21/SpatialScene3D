@@ -1,0 +1,36 @@
+area,metric,value,unit,interpretation,value_for_report
+Visual reconstruction,Held-out frames evaluated,15,frames,All held-out test frames were evaluated successfully.,15
+Visual reconstruction,PSNR,28.926003027454193,dB,Good image reconstruction quality on unseen frames.,28.926003027454193
+Visual reconstruction,SSIM,0.9026002486546835,score,High structural similarity between render and ground truth.,0.90260024865468347
+Visual reconstruction,LPIPS,0.058430341879526775,score,Low perceptual difference; lower is better.,0.058430341879526775
+3D Gaussian reconstruction,Raw Gaussian count,484707,Gaussians,Dense enough for a detailed indoor room-scale reconstruction.,484707
+3D Gaussian reconstruction,Semantic Gaussian count,484707,Gaussians,Semantic PLY preserved the full Gaussian cloud.,484707
+3D Gaussian reconstruction,Pruned viewer Gaussian count,379997,Gaussians,Viewer version is smaller and cleaner.,379997
+3D Gaussian reconstruction,Gaussians removed by pruning,104710,Gaussians,Pruning removed low-quality or viewer-unfriendly Gaussians.,104710
+3D Gaussian reconstruction,Pruning percentage,21.602741449989374,%,Pruning significantly reduced viewer file complexity.,21.602741449989374
+3D Gaussian reconstruction,Raw low-opacity Gaussian percentage,20.81257336906626,%,Raw PLY contains low-opacity floaters.,20.812573369066261
+3D Gaussian reconstruction,Pruned low-opacity Gaussian percentage,0.0,%,Pruned viewer PLY removes low-opacity floaters.,0
+3D Gaussian reconstruction,Raw maximum scale,0.7909812569658814,normalised scene units,Large scale outliers exist in the raw PLY.,0.7909812569658814
+3D Gaussian reconstruction,Pruned maximum scale,0.09633873986027604,normalised scene units,Pruning strongly reduces maximum Gaussian scale.,0.096338739860276038
+3D semantic output,Labelled Gaussians,181516,Gaussians,Meaningful subset of the 3D scene received semantic labels.,181516
+3D semantic output,Unlabelled Gaussians,303191,Gaussians,Unlabelled regions remain a limitation.,303191
+3D semantic output,Labelled percentage,37.44860297045432,%,Moderate-to-good semantic coverage for automatic 2D-to-3D lifting.,37.448602970454317
+3D semantic output,Unlabelled percentage,62.55139702954568,%,Shows remaining opportunity for improved lifting and label coverage.,62.551397029545683
+3D semantic output,Unique 3D labels excluding unlabelled,22,labels,Scene contains multiple useful object and structure categories.,22
+3D semantic output,Structural coverage,21.03188111580811,% of total Gaussians,"Floor, ceiling, door, wall and window labels contribute strongly.",21.031881115808108
+3D semantic output,Furniture/object coverage,16.38536270365396,% of total Gaussians,Furniture and objects are represented in the semantic output.,16.385362703653961
+3D semantic output,2D label retention in 3D,33.92857142857143,%,Underestimates true retention slightly due compound label canonicalisation.,33.928571428571431
+2D mask quality,Frames with masks,150,frames,Segmentation was active across the full video.,150
+2D mask quality,Total mask frames,150,frames,All processed frames were included in the mask manifest.,150
+2D mask quality,Total 2D masks,3222,masks,Large number of object/region masks generated.,3222
+2D mask quality,Average masks per frame,21.48,masks/frame,Healthy segmentation density.,21.48
+2D mask quality,Median masks per frame,22.0,masks/frame,Mask generation was consistent across frames.,22
+2D mask quality,Mean mask confidence,0.46757833766944656,score,Moderate open-vocabulary detection confidence.,0.46757833766944656
+2D mask quality,Median mask confidence,0.43014325201511383,score,Moderate detection confidence across masks.,0.43014325201511383
+2D mask quality,Small mask percentage,22.81191806331471,%,"Some small masks may be noisy, but many are valid small objects.",22.81191806331471
+2D mask quality,Large mask percentage,0.031036623215394164,%,Very low over-dominant mask rate.,0.031036623215394164
+2D mask quality,Largest 2D label,pillow,label,Most frequent detected label.,pillow
+2D mask quality,Largest 2D label share,14.835505896958411,%,No single label fully dominates the segmentation.,14.835505896958411
+Storage/output size,Raw PLY size,114.64010906219482,MB,Main full-resolution Gaussian output.,114.64010906219482
+Storage/output size,Semantic PLY size,116.95147609710693,MB,Slightly larger due semantic fields.,116.95147609710693
+Storage/output size,Pruned viewer PLY size,89.87501811981201,MB,Cleaner and lighter viewer-ready output.,89.875018119812012

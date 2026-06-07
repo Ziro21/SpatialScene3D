@@ -1,0 +1,33 @@
+category,metric,value,unit
+Dataset,Total processed frames,150.0,frames
+Dataset,Training frames,135.0,frames
+Dataset,Held-out test frames requested,15.0,frames
+Dataset,Held-out test frames evaluated,15.0,frames
+Visual reconstruction,PSNR,28.926003027454193,dB
+Visual reconstruction,SSIM,0.9026002486546835,score
+Visual reconstruction,LPIPS,0.058430341879526775,score
+Visual reconstruction,Saved comparison images,10.0,images
+Gaussian reconstruction,Raw Gaussian count,484707.0,Gaussians
+Gaussian reconstruction,Semantic Gaussian count,484707.0,Gaussians
+Gaussian reconstruction,Pruned viewer Gaussian count,379997.0,Gaussians
+Gaussian reconstruction,Gaussians per training frame,3590.4222222222224,Gaussians/frame
+Gaussian reconstruction,Gaussians per processed frame,3231.38,Gaussians/frame
+Semantic output,Labelled Gaussians,181516.0,Gaussians
+Semantic output,Labelled percentage,37.44860297045432,%
+Semantic output,Unlabelled percentage,62.55139702954568,%
+Semantic output,Labelled Gaussians per frame,1210.1066666666666,Gaussians/frame
+2D masks,Total 2D masks,3222.0,masks
+2D masks,Average masks per frame,21.48,masks/frame
+2D masks,Saved mask PNG files,3222.0,files
+Storage,Raw PLY size,114.64010906219482,MB
+Storage,Semantic PLY size,116.95147609710693,MB
+Storage,Pruned viewer PLY size,89.87501811981201,MB
+Storage,Latest checkpoint size,109.09442234039307,MB
+Storage,Frames directory size,30.544921875,MB
+Storage,Masks directory size,4.485694885253906,MB
+Storage,Test comparisons directory size,3.912996292114258,MB
+Storage,Raw PLY MB per 100k Gaussians,23.651424275324022,MB/100k Gaussians
+Pruning,Gaussians removed by pruning,104710.0,Gaussians
+Pruning,Gaussian reduction by pruning,21.602741449989374,%
+Pruning,File size reduction by pruning,24.765090942382812,MB
+Pruning,File size reduction percentage,21.60246631390345,%

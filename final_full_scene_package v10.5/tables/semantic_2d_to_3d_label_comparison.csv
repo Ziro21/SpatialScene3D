@@ -1,0 +1,61 @@
+label_name,mask_count_2d,gaussian_count_3d,appears_in_2d,appears_in_3d,percentage_of_total_gaussians,percentage_of_labelled_gaussians
+unlabelled,0,303191,False,True,62.55139702954568,
+ceiling,161,56921,True,True,11.743383115985534,31.358668106392823
+sofa,117,24860,True,True,5.12887166886387,13.695762357037395
+door,190,21290,True,True,4.392344240953813,11.728993587342163
+floor,180,17869,True,True,3.6865570334243163,9.84431124528967
+picture frame,222,9455,True,True,1.950662977840221,5.20890720377267
+plant,93,8811,True,True,1.8177992065309558,4.854117543357059
+chair,244,8392,True,True,1.7313552310983749,4.623283897838207
+mirror,105,7549,True,True,1.557435729213731,4.1588620286916855
+bed,146,6304,True,True,1.300579525362745,3.472972079596289
+shelf,0,3525,False,True,0.7272434687347201,1.9419775667158818
+television,0,3493,False,True,0.7206415422100362,1.924348266819454
+wall,87,3408,True,True,0.7031051748788444,1.8775204389695674
+rug,123,3187,True,True,0.6575106198177456,1.7557680865598624
+window,88,2455,True,True,0.5064915505655995,1.352497851429075
+desk,123,1499,True,True,0.3092589956406654,0.8258225170232927
+pillow,478,1057,True,True,0.21806988551846787,0.5823178122038829
+lamp,252,512,True,True,0.10563082439494376,0.2820687983428458
+table,0,480,False,True,0.09902889787025977,0.26443949844641795
+cup,241,297,True,True,0.06127413055722323,0.1636219396637211
+fireplace,3,130,True,True,0.026820326506528686,0.07161903082923819
+sink,20,18,True,True,0.003713583670134741,0.009916481191740673
+curtain,43,4,True,True,0.0008252408155854981,0.002203662487053483
+shelf cabinet bookshelf,79,0,True,False,0.0,0.0
+table desk,76,0,True,False,0.0,0.0
+monitor television,43,0,True,False,0.0,0.0
+sofa bed,26,0,True,False,0.0,0.0
+chair sofa,11,0,True,False,0.0,0.0
+window curtain,7,0,True,False,0.0,0.0
+window picture frame,7,0,True,False,0.0,0.0
+window mirror,6,0,True,False,0.0,0.0
+floor rug,5,0,True,False,0.0,0.0
+shelf cabinet wardrobe bookshelf,5,0,True,False,0.0,0.0
+wardrobe,4,0,True,False,0.0,0.0
+curtain wardrobe,3,0,True,False,0.0,0.0
+door wardrobe,3,0,True,False,0.0,0.0
+laptop,3,0,True,False,0.0,0.0
+chair sofa rug,2,0,True,False,0.0,0.0
+cup lamp,2,0,True,False,0.0,0.0
+monitor mirror television,2,0,True,False,0.0,0.0
+shelf cabinet,2,0,True,False,0.0,0.0
+shelf cabinethelf,2,0,True,False,0.0,0.0
+bed rug,1,0,True,False,0.0,0.0
+bookshelf,1,0,True,False,0.0,0.0
+chair bed,1,0,True,False,0.0,0.0
+chair desk,1,0,True,False,0.0,0.0
+chair rug,1,0,True,False,0.0,0.0
+chair rug pillow,1,0,True,False,0.0,0.0
+chair table desk,1,0,True,False,0.0,0.0
+mirror fireplace,1,0,True,False,0.0,0.0
+monitor,1,0,True,False,0.0,0.0
+monitor mirror,1,0,True,False,0.0,0.0
+monitor window picture frame,1,0,True,False,0.0,0.0
+shelf cabinet bookshel,1,0,True,False,0.0,0.0
+shelf cabinet wardrobehel,1,0,True,False,0.0,0.0
+sofahelf,1,0,True,False,0.0,0.0
+wall curtain,1,0,True,False,0.0,0.0
+wardrobe bookshel,1,0,True,False,0.0,0.0
+window frame,1,0,True,False,0.0,0.0
+window mirror frame,1,0,True,False,0.0,0.0
