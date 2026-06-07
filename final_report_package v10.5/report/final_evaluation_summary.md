@@ -1,7 +1,7 @@
 
 # Final Evaluation Summary
 
-> **Note:** this file is auto-generated from the numeric metrics and covers visual reconstruction, Gaussian counts, 3D semantic coverage, 2D mask quality, and storage. For the parts not captured here — open-vocabulary CLIP search, artefact packaging/accessibility, and the agentic QA & release gate — see [`EVALUATION_ADDENDUM.md`](EVALUATION_ADDENDUM.md).
+> **Note:** this file is auto-generated from the numeric metrics and covers visual reconstruction, Gaussian counts, 3D semantic coverage, 2D mask quality, and storage. For the parts not captured here — open-vocabulary CLIP search, artefact packaging/accessibility, and the agentic QA & release gate — see [`EVALUATION_ADDENDUM.md`](EVALUATION_ADDENDUM.md) and the agentic QA report [`../qa/agentic_qa_report.md`](../qa/agentic_qa_report.md).
 
 ## Overall result
 

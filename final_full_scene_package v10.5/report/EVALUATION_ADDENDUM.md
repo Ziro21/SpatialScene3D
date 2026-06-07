@@ -39,17 +39,21 @@ The run is exported as two self-describing evidence bundles plus a manifest:
 - **`final_full_scene_package v10.5/`** — the same evidence plus the scene PLYs
   and the semantic label map.
 
-Large 3D artefacts are distributed according to their size:
+Large 3D artefacts are distributed according to their size. The release-artefact
+filenames are listed explicitly so they can be located directly:
 
-| Artefact | Size | Location |
+| Artefact (filename) | Size | Location |
 |---|---:|---|
-| Pruned viewer PLY | ~90 MB | In-repo via Git LFS |
-| Semantic PLY (labelled) | ~117 MB | GitHub Release `v10.5` |
-| Raw full PLY | ~115 MB | GitHub Release `v10.5` |
-| CLIP embeddings (`embeddings.npz`) | <1 MB | In-repo |
-| 2D masks archive (`masks.zip`) | ~2.5 MB | In-repo |
+| `splat_raw_pruned_for_viewer.ply` (pruned viewer PLY) | ~90 MB | In-repo via Git LFS |
+| `splat_semantic.ply` (labelled scene) | ~117 MB | GitHub Release `v10.5` |
+| `splat_final.ply` (raw reconstruction) | ~115 MB | GitHub Release `v10.5` |
+| `final_full_scene_package_v10.5.zip` (full evidence bundle) | ~84 MB | GitHub Release `v10.5` |
+| `embeddings.npz` (CLIP embeddings) | <1 MB | In-repo |
+| `masks.zip` (2D masks archive) | ~2.5 MB | In-repo |
 
-GitHub Release: https://github.com/Ziro21/SpatialScene3D/releases/tag/v10.5
+The GitHub Release `v10.5` contains `splat_final.ply`, `splat_semantic.ply`, and
+`final_full_scene_package_v10.5.zip`:
+https://github.com/Ziro21/SpatialScene3D/releases/tag/v10.5
 
 ---
 
