@@ -30,6 +30,7 @@ outputs-v6/
 outputs-v7/
 outputs-v8/
 output-v7.5/
+outputs-v10.5/
 room_frames.zip
 temp_data.zip
 *.zip
@@ -39,6 +40,8 @@ temp_data.zip
 # PLY (90MB) IS tracked via LFS so the scene can still be loaded in the viewer.
 final_full_scene_package/scene_outputs/splat_final.ply
 final_full_scene_package/scene_outputs/splat_semantic.ply
+final_full_scene_package v10.5/scene_outputs/splat_final.ply
+final_full_scene_package v10.5/scene_outputs/splat_semantic.ply
 
 # --- Model Weights (downloaded separately) ---
 checkpoints/
