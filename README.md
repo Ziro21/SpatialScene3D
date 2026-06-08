@@ -21,7 +21,7 @@ The end-to-end pipeline runs in a single self-contained Colab notebook
 (`preprocess/`, `semantics/`, `viewer/`, `eval/`) provides the supporting modules
 and the interactive viewer.
 
-> **Implementation note (honest):** the shipped geometry front-end is **COLMAP
+> **Implementation note:** the shipped geometry front-end is **COLMAP
 > Structure-from-Motion**, not MASt3R-SLAM. MASt3R-SLAM was the original design
 > (see [DESIGN.md](DESIGN.md)), but its cloud build proved insufficiently stable for
 > a reproducible pipeline; COLMAP was selected to provide a robust, well-established
