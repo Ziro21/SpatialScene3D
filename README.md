@@ -260,3 +260,5 @@ make test            # or: python -m pytest tests/ -v
 
 Code under Apache 2.0. Model weights under their respective licenses (COLMAP: BSD;
 Grounded-SAM-2: Apache 2.0; CLIP: MIT).
+
+Author: Zeyad Khalil.
