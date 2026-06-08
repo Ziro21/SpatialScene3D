@@ -115,7 +115,7 @@ perception system must know *when its own output is trustworthy* and when to
 re-acquire data. This layer is a small, honest demonstration of exactly that —
 the pipeline reasons about its own quality and gates its own release.
 
-## Known limitations (carried into the submission honestly)
+## Known limitations (documented honestly)
 
 - ~61% of Gaussians remain unlabelled; large flat surfaces (walls) under-segment.
 - The shipped geometry is COLMAP, not the MASt3R-SLAM stack argued for in

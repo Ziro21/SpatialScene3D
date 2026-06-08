@@ -1,8 +1,8 @@
-# Design Choices — scene3d
+# Design Choices — SpatialScene3D
 
 > A technical memo explaining the architecture, trade-offs, and robotics relevance of this 3D scene reconstruction system.
 >
-> **Author:** Zeyad Khalil · **Date:** May 2026 · **Target:** Humanoid Perception & Spatial AI Internship
+> **Author:** Zeyad Khalil · **Date:** June 2026
 
 ---
 
