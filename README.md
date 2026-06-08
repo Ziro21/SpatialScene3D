@@ -23,8 +23,9 @@ and the interactive viewer.
 
 > **Implementation note (honest):** the shipped geometry front-end is **COLMAP
 > Structure-from-Motion**, not MASt3R-SLAM. MASt3R-SLAM was the original design
-> (see [DESIGN.md](DESIGN.md)) but proved unreliable to build on Colab; COLMAP was
-> chosen to deliver a robust, reproducible end-to-end pipeline. The MASt3R-SLAM
+> (see [DESIGN.md](DESIGN.md)), but its cloud build proved insufficiently stable for
+> a reproducible pipeline; COLMAP was selected to provide a robust, well-established
+> Structure-from-Motion front-end with proven reliability. The MASt3R-SLAM
 > swap remains scoped as future work. See [DEVELOPMENT.md](DEVELOPMENT.md) for the
 > full engineering story.
 
@@ -88,10 +89,6 @@ python qa_supervisor.py \
 export LLM_API_KEY="your_key"      # or put it in a local .env (gitignored)
 # Provider/model are configurable: LLM_BASE_URL, LLM_MODEL
 ```
-
-Why this matters for spatial AI: a perception system must know *when its own output
-is trustworthy*. This layer is a small, honest demonstration of that self-assessment
-step.
 
 ---
 
