@@ -4,8 +4,6 @@
 > an interactive, semantically-labelled 3D Gaussian Splat with open-vocabulary text
 > queries, plus an agentic QA layer that assesses its own release-readiness.
 
-Built for the **Humanoid Perception & Spatial AI Internship Challenge** (London 2025).
-
 ---
 
 ## What this is
@@ -258,8 +256,7 @@ make test            # or: python -m pytest tests/ -v
 
 ---
 
-## License & Acknowledgements
+## License
 
 Code under Apache 2.0. Model weights under their respective licenses (COLMAP: BSD;
-Grounded-SAM-2: Apache 2.0; CLIP: MIT). Built for the Humanoid Perception & Spatial
-AI Internship Challenge, London 2025.
+Grounded-SAM-2: Apache 2.0; CLIP: MIT).
