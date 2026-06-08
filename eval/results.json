@@ -1,5 +1,25 @@
 {
-  "scenes": {},
-  "generated_at": null,
-  "notes": "This file is auto-populated by eval/metrics.py"
+  "scenes": {
+    "room_v10_5": {
+      "novel_view_synthesis": {
+        "psnr": 28.93,
+        "ssim": 0.903,
+        "lpips": 0.058,
+        "evaluated_frames": 15,
+        "split": "every 10th registered frame held out (135 train / 15 test)"
+      },
+      "reconstruction": {
+        "total_gaussians": 484707,
+        "labelled_gaussians": 181516,
+        "labelled_percentage": 37.4,
+        "unique_3d_classes": 22
+      },
+      "segmentation": {
+        "total_2d_masks": 3222,
+        "frames_with_masks": 150
+      }
+    }
+  },
+  "generated_at": "2026-06",
+  "notes": "Final v10.5 run. Full evidence (per-class tables, comparison images, QA report) in the final_report_package v10.5/ and final_full_scene_package v10.5/ directories."
 }

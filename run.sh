@@ -10,8 +10,9 @@
 #
 # This script runs the LOCAL stages only (preprocessing,
 # semantic lifting, CLIP embeddings, and launches the viewer).
-# MASt3R-SLAM and gsplat training must be run on Colab first.
-# See notebooks/colab_pipeline.py for the cloud steps.
+# The COLMAP geometry and gsplat training stages run on Colab first
+# (see notebook_v10_5.ipynb). MASt3R-SLAM was the original geometry
+# approach; see DESIGN.md for why COLMAP was selected instead.
 # ============================================================
 
 set -euo pipefail
@@ -22,7 +23,7 @@ SCENE_NAME="${2:-scene1}"
 
 echo ""
 echo "============================================="
-echo " scene3d — 3D Scene Reconstruction Pipeline"
+echo " SpatialScene3D — 3D Scene Reconstruction Pipeline"
 echo "============================================="
 echo " Video:  ${VIDEO_PATH}"
 echo " Scene:  ${SCENE_NAME}"

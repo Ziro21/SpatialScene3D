@@ -127,71 +127,71 @@
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_07_000080.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_07_000080.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_07_000080.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_07_000080.png",
       "size_mb": 0.39037036895751953
     },
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_03_000040.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_03_000040.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_03_000040.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_03_000040.png",
       "size_mb": 0.39019012451171875
     },
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_01_000020.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_01_000020.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_01_000020.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_01_000020.png",
       "size_mb": 0.3976726531982422
     },
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_02_000030.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_02_000030.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_02_000030.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_02_000030.png",
       "size_mb": 0.39149951934814453
     },
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_09_000100.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_09_000100.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_09_000100.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_09_000100.png",
       "size_mb": 0.39495182037353516
     },
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_08_000090.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_08_000090.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_08_000090.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_08_000090.png",
       "size_mb": 0.38001346588134766
     },
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_06_000070.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_06_000070.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_06_000070.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_06_000070.png",
       "size_mb": 0.3703422546386719
     },
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_00_000010.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_00_000010.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_00_000010.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_00_000010.png",
       "size_mb": 0.4269380569458008
     },
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_05_000060.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_05_000060.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_05_000060.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_05_000060.png",
       "size_mb": 0.3804941177368164
     },
     {
       "category": "visual_comparisons",
       "description": "Ground-truth vs rendered held-out comparison image",
-      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_04_000050.png.png",
-      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_04_000050.png.png",
+      "source_path": "/content/scene3d_work/run_final/test_comparisons/compare_04_000050.png",
+      "packaged_path": "/content/scene3d_work/run_final/final_export_package/report_package/visual_comparisons/compare_04_000050.png",
       "size_mb": 0.39052391052246094
     }
   ]

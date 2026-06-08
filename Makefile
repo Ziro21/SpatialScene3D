@@ -1,5 +1,5 @@
 # ============================================================
-# Makefile — scene3d project commands
+# Makefile — SpatialScene3D project commands
 # ============================================================
 # Usage:
 #   make lint      — format + type-check all Python files
@@ -15,7 +15,7 @@
 # Default: show help
 help:
 	@echo ""
-	@echo "  scene3d — 3D Scene Reconstruction from Monocular Video"
+	@echo "  SpatialScene3D — 3D Scene Reconstruction from Monocular Video"
 	@echo "  ======================================================="
 	@echo ""
 	@echo "  make preprocess VIDEO=video.mp4   Extract + filter frames"
