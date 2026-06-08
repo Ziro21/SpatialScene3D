@@ -35,7 +35,7 @@ and the interactive viewer.
 
 Metrics are computed on **15 held-out frames never seen during training** (every
 10th registered frame), with a gsplat-consistent camera-pose alignment. These are
-honest generalisation numbers, not training-set scores.
+true held-out generalisation numbers, not training-set scores.
 
 | Metric | Value |
 |---|---:|
@@ -193,7 +193,7 @@ SpatialScene3D/
 ├── assets/videos/                  # Example input videos (LFS)
 ├── archive/notebooks/              # Earlier notebook versions (dev history + index)
 ├── DESIGN.md                       # Technical design memo (incl. MASt3R rationale)
-├── DEVELOPMENT.md                  # Engineering timeline & honest decisions
+├── DEVELOPMENT.md                  # Engineering timeline & key decisions
 ├── README.md  requirements.txt  Makefile  run.sh  download_weights.sh
 ```
 
@@ -208,7 +208,7 @@ SpatialScene3D/
   MASt3R-SLAM), trade-offs, robotics relevance, limitations.
 - **[DEVELOPMENT.md](DEVELOPMENT.md)** — the engineering journey: local prototype →
   Colab migration to COLMAP → the three substantive bug fixes → final run →
-  agentic QA layer. Includes an honest account of what was shipped vs. planned.
+  agentic QA layer. Includes a clear account of what was shipped vs. planned.
 
 ---
 
